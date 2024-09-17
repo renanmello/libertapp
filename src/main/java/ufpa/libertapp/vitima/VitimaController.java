@@ -3,6 +3,7 @@ package ufpa.libertapp.vitima;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import ufpa.libertapp.product.Product;
 
 @RestController
 @RequestMapping("/vitima")
@@ -23,4 +24,15 @@ public class VitimaController {
         return vitimaService.create(vitima);
     }
 
+    @PreAuthorize("hasRole('PRODUCT_UPDATE')")
+    @PutMapping
+    public Vitima update(@RequestBody Vitima vitima) {
+        return vitimaService.update(vitima);
+    }
+
+    @PreAuthorize("hasRole('PRODUCT_DELETE')")
+    @DeleteMapping
+    public void delete(@RequestParam("cpf") String cpf) {
+        vitimaService.delete(cpf);
+    }
 }
