@@ -23,6 +23,7 @@ public class Vitima  {
     private String cpf;
 
     @OneToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     private String nome;
@@ -49,4 +50,7 @@ public class Vitima  {
     private boolean empregada;
 
 
+    public boolean getConfirmacao_termo() {
+        return this.confirmacao_termo;
+    }
 }

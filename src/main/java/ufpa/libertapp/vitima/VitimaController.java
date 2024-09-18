@@ -1,6 +1,7 @@
 package ufpa.libertapp.vitima;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ufpa.libertapp.product.Product;
@@ -20,14 +21,15 @@ public class VitimaController {
 
     @PreAuthorize("hasRole('PRODUCT_INSERT')")
     @PostMapping
-    public Vitima create(@RequestBody Vitima vitima) {
-        return vitimaService.create(vitima);
+    public Vitima create(@RequestBody Vitima vitima,  @RequestParam Long userId) {
+        return vitimaService.create(vitima, userId);
     }
 
     @PreAuthorize("hasRole('PRODUCT_UPDATE')")
-    @PutMapping
-    public Vitima update(@RequestBody Vitima vitima) {
-        return vitimaService.update(vitima);
+    @PutMapping("/{cpf}")
+    public ResponseEntity<Vitima> update(@RequestBody Vitima vitima, @PathVariable String cpf) {
+        Vitima updatedVitima = vitimaService.update(vitima, cpf);
+        return ResponseEntity.ok(updatedVitima);
     }
 
     @PreAuthorize("hasRole('PRODUCT_DELETE')")
