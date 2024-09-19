@@ -42,6 +42,10 @@ public class Vitima  {
 
     private String endereco;
 
+    private String escolaridade;
+
+    private String experiencia;
+
     @Lob
     private byte[] curriculoPdf;
 
