@@ -24,4 +24,14 @@ public class UserServiceImpl implements UserService {
         User createdUser = userRepository.save(user);
         return createdUser;
     }
+
+    @Override
+    public User View(String username, String password) {
+        User user = userRepository.findByUsername(username);
+
+        if(user.getUsername().equals(username)  && passwordEncoder().matches(password,user.getPassword())){
+            return userRepository.findByUsername(username);
+        }
+        throw new Error("User not found");
+    }
 }
