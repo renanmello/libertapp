@@ -1,5 +1,6 @@
 package ufpa.libertapp.experienciatrabalho;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,6 +28,7 @@ public class ExperienciaTrabalho {
 
     @ManyToOne
     @JoinColumn(name = "vitima_cpf")  // Relacionamento com Vitima, FK para a tabela Vitima
+    @JsonBackReference
     private Vitima vitima;
 
 }

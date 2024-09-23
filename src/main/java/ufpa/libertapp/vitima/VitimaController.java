@@ -15,7 +15,7 @@ public class VitimaController {
 
     @PreAuthorize("hasRole('PRODUCT_SELECT')")
     @GetMapping
-    public Vitima view(@RequestParam("cpf") String cpf) {
+    public Vitima viewDados(@RequestParam("cpf") String cpf) {
         return vitimaService.viewDados(cpf);
     }
 

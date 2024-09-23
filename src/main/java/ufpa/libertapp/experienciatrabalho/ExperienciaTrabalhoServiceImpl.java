@@ -1,16 +1,24 @@
 package ufpa.libertapp.experienciatrabalho;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import ufpa.libertapp.vitima.Vitima;
 import ufpa.libertapp.vitima.VitimaRepository;
 
 import java.util.Optional;
 
 @Service
-public class ExperienciaTrabalhoServiceImpl implements ExperienciaTrabalhoService{
+public class ExperienciaTrabalhoServiceImpl implements ExperienciaTrabalhoService {
 
-    VitimaRepository vitimaRepository;
-    ExperienciaTrabalhoRepository experienciaTrabalhoRepository;
+    private final VitimaRepository vitimaRepository;
+    private final ExperienciaTrabalhoRepository experienciaTrabalhoRepository;
+
+    @Autowired
+    public ExperienciaTrabalhoServiceImpl(VitimaRepository vitimaRepository, ExperienciaTrabalhoRepository experienciaTrabalhoRepository) {
+        this.experienciaTrabalhoRepository = experienciaTrabalhoRepository;
+        this.vitimaRepository = vitimaRepository;
+    }
 
     @Override
     public Optional<ExperienciaTrabalho> view(Long id) {
@@ -18,8 +26,12 @@ public class ExperienciaTrabalhoServiceImpl implements ExperienciaTrabalhoServic
     }
 
     @Override
-    public ExperienciaTrabalho create(ExperienciaTrabalho experienciaTrabalho, Vitima vitima) {
+    public ExperienciaTrabalho create(@RequestBody ExperienciaTrabalho experienciaTrabalho, String cpf) {
+
+        Vitima vitima = vitimaRepository.findById(cpf).orElseThrow(() -> new RuntimeException("Cpf invalido."));
         experienciaTrabalho.setVitima(vitima);
         return experienciaTrabalhoRepository.save(experienciaTrabalho);
+
+
     }
 }

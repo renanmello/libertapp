@@ -1,5 +1,8 @@
 package ufpa.libertapp.vitima;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,6 +28,7 @@ public class Vitima {
 
     @OneToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 
     private String nome;
@@ -46,6 +50,7 @@ public class Vitima {
     private String escolaridade;
 
     @OneToMany(mappedBy = "vitima", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<ExperienciaTrabalho> experiencias;
 
     @Lob
