@@ -5,9 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ufpa.libertapp.experienciatrabalho.ExperienciaTrabalho;
 import ufpa.libertapp.user.User;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "vitima")
@@ -15,8 +17,7 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Vitima  {
-
+public class Vitima {
 
 
     @Id
@@ -44,7 +45,8 @@ public class Vitima  {
 
     private String escolaridade;
 
-    private String experiencia;
+    @OneToMany(mappedBy = "vitima", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ExperienciaTrabalho> experiencias;
 
     @Lob
     private byte[] curriculoPdf;
