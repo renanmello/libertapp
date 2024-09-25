@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:9
+    container_name: mysql-db
+    environment:
+      MYSQL_DATABASE: projectufpa
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - '3306:3306'
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - springboot-network
+
+  springboot-app:
+    build:
+      context: ./app
+      dockerfile: dockerfile
+    container_name: springboot-app
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/projectufpa
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - '8080:8080'
+    depends_on:
+      - mysql
+    networks:
+      - springboot-network
+
+networks:
+  springboot-network:
+
+volumes:
+  mysql-data:
