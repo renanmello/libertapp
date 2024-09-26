@@ -25,23 +25,27 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-       return http.csrf(csrf -> csrf.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests((request) -> request
-                        .requestMatchers(HttpMethod.POST, "/user/**").permitAll()
-                        .anyRequest()
-                        .authenticated()).addFilterBefore(customBasicAuthenticationFilter, UsernamePasswordAuthenticationFilter.class).cors(cors ->cors.disable()).build();
-
-
+        return http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Ativa o CORS no Spring Security
+                .csrf(csrf -> csrf.disable()) // Desativa CSRF para APIs stateless
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless session
+                .authorizeHttpRequests(requests -> requests
+                        .requestMatchers(HttpMethod.POST, "/user/**").permitAll() // Permite acesso ao endpoint de registro
+                        .anyRequest().authenticated()) // Exige autenticação para todas as outras rotas
+                .addFilterBefore(customBasicAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
 
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000/register" , "http://localhost:3000","http://localhost:3000/*" )); // Permite todas as origens (mude conforme necessário)
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Permite métodos HTTP específicos
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type")); // Permite headers específicos
+        configuration.setAllowCredentials(true); // Permite envio de credenciais (como cookies)
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+        source.registerCorsConfiguration("/**", configuration); // Aplica o CORS para todas as rotas
         return source;
     }
 }

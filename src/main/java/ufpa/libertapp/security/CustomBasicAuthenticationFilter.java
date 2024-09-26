@@ -23,7 +23,7 @@ import java.util.Base64;
 public class CustomBasicAuthenticationFilter extends OncePerRequestFilter {
 
     private static final String AUTHORIZATION = "Authorization";
-    private static final String BASIC = "Basic ";
+    private static final String BASIC = "Basic";
     private final UserRepository userRepository;
 
     public PasswordEncoder passwordEncoder() {
@@ -32,6 +32,12 @@ public class CustomBasicAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         if (isBasicAuthentication(request)) {
             String[] credentials = decodeBase64(getHeader(request).replace(BASIC, ""))
                     .split(":");
