@@ -11,11 +11,12 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping
+    @PostMapping("/create")
     public User create(@RequestBody User user) {
         return userService.create(user);
     }
-    @GetMapping
+
+    @PostMapping("/view")
     public User view(@RequestBody User user) {
         return userService.View(user.getUsername(), user.getPassword());
     }
