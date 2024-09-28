@@ -25,6 +25,8 @@ public class ExperienciaTrabalho {
     private String cargo;
     private LocalDate dataInicio;
     private LocalDate dataFim;
+    private String experiencias;
+    private String escolaridade;
 
     @ManyToOne
     @JoinColumn(name = "vitima_cpf")  // Relacionamento com Vitima, FK para a tabela Vitima
