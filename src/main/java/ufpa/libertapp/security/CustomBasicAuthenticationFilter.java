@@ -21,7 +21,6 @@ import java.util.Base64;
 @Component
 @RequiredArgsConstructor
 public class CustomBasicAuthenticationFilter extends OncePerRequestFilter {
-
     private static final String AUTHORIZATION = "Authorization";
     private static final String BASIC = "Basic";
     private final UserRepository userRepository;
@@ -32,15 +31,14 @@ public class CustomBasicAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
             filterChain.doFilter(request, response);
             return;
         }
 
         if (isBasicAuthentication(request)) {
-            String[] credentials = decodeBase64(getHeader(request).replace(BASIC, ""))
-                    .split(":");
+            String[] credentials = decodeBase64(getHeader(request)
+                    .replace(BASIC, "")).split(":");
             String username = credentials[0];
             String password = credentials[1];
             User user = userRepository.findByUsernameFetchRoles(username);
@@ -59,7 +57,6 @@ public class CustomBasicAuthenticationFilter extends OncePerRequestFilter {
             }
 
             setAuthentication(user);
-
         }
         filterChain.doFilter(request, response);
     }
@@ -67,7 +64,6 @@ public class CustomBasicAuthenticationFilter extends OncePerRequestFilter {
     private void setAuthentication(User user) {
         Authentication authentication = createAuthenticationToken(user);
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
     }
 
     private Authentication createAuthenticationToken(User user) {
@@ -92,6 +88,4 @@ public class CustomBasicAuthenticationFilter extends OncePerRequestFilter {
     private String getHeader(HttpServletRequest request) {
         return request.getHeader(AUTHORIZATION);
     }
-
-
 }

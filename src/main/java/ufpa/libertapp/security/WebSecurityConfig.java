@@ -26,14 +26,14 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Ativa o CORS no Spring Security
-                .csrf(csrf -> csrf.disable()) // Desativa CSRF para APIs stateless
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless session
-                .authorizeHttpRequests(requests -> requests
-                        .requestMatchers(HttpMethod.POST, "/user/**").permitAll() // Permite acesso ao endpoint de registro
-                        .anyRequest().authenticated()) // Exige autenticação para todas as outras rotas
-                .addFilterBefore(customBasicAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
+            .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Ativa o CORS no Spring Security
+            .csrf(csrf -> csrf.disable()) // Desativa CSRF para APIs stateless
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless session
+            .authorizeHttpRequests(requests -> requests
+                .requestMatchers(HttpMethod.POST, "/user/**").permitAll() // Permite acesso ao endpoint de registro
+                .anyRequest().authenticated()) // Exige autenticação para todas as outras rotas
+            .addFilterBefore(customBasicAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+            .build();
     }
 
     @Bean

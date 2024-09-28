@@ -1,7 +1,6 @@
 package ufpa.libertapp.vitima;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,8 +20,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Vitima {
-
-
     @Id
     private String cpf;
 
@@ -59,7 +56,6 @@ public class Vitima {
     private boolean confirmacao_termo;
 
     private boolean empregada;
-
 
     public boolean getConfirmacao_termo() {
         return this.confirmacao_termo;

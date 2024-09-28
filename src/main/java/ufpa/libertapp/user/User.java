@@ -1,6 +1,5 @@
 package ufpa.libertapp.user;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -34,5 +33,4 @@ public class User {
 
     @ManyToMany
     private List<Role> roles;
-
 }

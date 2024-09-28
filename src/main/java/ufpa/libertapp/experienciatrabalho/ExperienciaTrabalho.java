@@ -30,5 +30,4 @@ public class ExperienciaTrabalho {
     @JoinColumn(name = "vitima_cpf")  // Relacionamento com Vitima, FK para a tabela Vitima
     @JsonBackReference
     private Vitima vitima;
-
 }

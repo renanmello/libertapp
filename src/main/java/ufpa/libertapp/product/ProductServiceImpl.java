@@ -8,7 +8,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
-
     private final ProductRepository productRepository;
 
     @Override
@@ -20,7 +19,6 @@ public class ProductServiceImpl implements ProductService {
     public Product create(Product product) {
         if (product.getId() != null) {
             throw new RuntimeException("To create a record, you can not have an ID");
-
         }
         return productRepository.save(product);
     }

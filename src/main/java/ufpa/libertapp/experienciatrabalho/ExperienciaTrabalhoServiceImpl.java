@@ -10,7 +10,6 @@ import java.util.Optional;
 
 @Service
 public class ExperienciaTrabalhoServiceImpl implements ExperienciaTrabalhoService {
-
     private final VitimaRepository vitimaRepository;
     private final ExperienciaTrabalhoRepository experienciaTrabalhoRepository;
 
@@ -27,11 +26,8 @@ public class ExperienciaTrabalhoServiceImpl implements ExperienciaTrabalhoServic
 
     @Override
     public ExperienciaTrabalho create(@RequestBody ExperienciaTrabalho experienciaTrabalho, String cpf) {
-
         Vitima vitima = vitimaRepository.findById(cpf).orElseThrow(() -> new RuntimeException("Cpf invalido."));
         experienciaTrabalho.setVitima(vitima);
         return experienciaTrabalhoRepository.save(experienciaTrabalho);
-
-
     }
 }

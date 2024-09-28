@@ -5,11 +5,8 @@ import org.springframework.stereotype.Service;
 import ufpa.libertapp.user.User;
 import ufpa.libertapp.user.UserRepository;
 
-import java.util.Optional;
-
 @Service
 public class VitimaServiceImpl implements VitimaService {
-
     private final VitimaRepository vitimaRepository;
     private final UserRepository userRepository;
 
@@ -41,6 +38,7 @@ public class VitimaServiceImpl implements VitimaService {
                 .orElseThrow(() -> new RuntimeException("Vítima não encontrada com o CPF: " + cpf));
         User user = userRepository.findById(vitima.getUser().getId())
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
+
         // Atualiza os campos necessários
         existingVitima.setNome(vitima.getNome());
         existingVitima.setCep(vitima.getCep());
@@ -53,17 +51,6 @@ public class VitimaServiceImpl implements VitimaService {
         existingVitima.setCurriculoPdf(vitima.getCurriculoPdf());
         existingVitima.setData_nascimento(vitima.getData_nascimento());
         existingVitima.setUser(user);
-        //if(vitima.getCpf() == null){
-        //    throw new RuntimeException("To update a record, you must have an CPF");
-        //}
-
-        // Atualiza o usuário, se necessário
-        //if (vitima.getUser() != null) {
-        //    User user = userRepository.findById(vitima.getUser().getId())
-        //            .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
-        //    existingVitima.setUser(user);
-        //}
-
 
         return vitimaRepository.save(existingVitima);
     }
