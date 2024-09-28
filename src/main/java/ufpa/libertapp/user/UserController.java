@@ -9,12 +9,11 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
-    @PostMapping("/create")
+    @PostMapping
     public User create(@RequestBody User user) {
         return userService.create(user);
     }
-
-    @PostMapping("/view")
+    @GetMapping
     public User view(@RequestBody User user) {
         return userService.View(user.getUsername(), user.getPassword());
     }
