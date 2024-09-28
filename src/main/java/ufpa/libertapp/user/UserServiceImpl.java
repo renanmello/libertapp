@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
     public User View(String username, String password) {
         User user = userRepository.findByUsername(username);
 
-        if(user.getUsername().equals(username)  && passwordEncoder().matches(password,user.getPassword())){
+        if(user.getUsername().equals(username) && passwordEncoder().matches(password, user.getPassword())){
             return userRepository.findByUsername(username);
         }
         throw new Error("User not found");
