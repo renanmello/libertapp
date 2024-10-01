@@ -13,14 +13,14 @@ public class ExperienciaTrabalhoController {
     private final ExperienciaTrabalhoService experienciaTrabalhoService;
 
     @PreAuthorize("hasRole('PRODUCT_SELECT')")
-    @GetMapping("/view")
+    @PostMapping("/view")
     public Optional<ExperienciaTrabalho> view(@RequestParam("id") Long id) {
         return experienciaTrabalhoService.view(id);
     }
 
     @PreAuthorize("hasRole('PRODUCT_INSERT')")
     @PostMapping("/create")
-    public ExperienciaTrabalho create(@RequestBody ExperienciaTrabalho experienciaTrabalho, @RequestParam String cpf){
+    public ExperienciaTrabalho create(@RequestBody ExperienciaTrabalho experienciaTrabalho, @RequestParam String cpf) {
         return experienciaTrabalhoService.create(experienciaTrabalho, cpf);
     }
 }

@@ -14,7 +14,7 @@ public class UserController {
         return userService.create(user);
     }
 
-    @GetMapping("/view")
+    @PostMapping("/view")
     public User view(@RequestBody User user) {
         return userService.View(user.getUsername(), user.getPassword());
     }
