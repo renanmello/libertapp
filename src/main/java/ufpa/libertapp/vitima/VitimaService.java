@@ -1,6 +1,6 @@
 package ufpa.libertapp.vitima;
 
-import ufpa.libertapp.product.Product;
+
 
 public interface VitimaService {
     Vitima viewDados(String cpf);

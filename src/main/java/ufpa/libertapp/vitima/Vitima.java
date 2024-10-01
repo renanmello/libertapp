@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ufpa.libertapp.curso.Curso;
 import ufpa.libertapp.experienciatrabalho.ExperienciaTrabalho;
 import ufpa.libertapp.user.User;
 
@@ -52,6 +53,10 @@ public class Vitima {
     @OneToMany(mappedBy = "vitima", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<ExperienciaTrabalho> experiencias;
+
+    @OneToMany(mappedBy = "vitima", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Curso> cursos;
 
     @Lob
     private byte[] curriculoPdf;
