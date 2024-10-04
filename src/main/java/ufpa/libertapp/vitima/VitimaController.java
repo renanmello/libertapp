@@ -13,7 +13,7 @@ public class VitimaController {
 
     private final VitimaService vitimaService;
 
-    @PreAuthorize("hasRole('PRODUCT_SELECT')")
+
     @GetMapping
     public Vitima viewDados(@RequestParam("cpf") String cpf) {
         return vitimaService.viewDados(cpf);
@@ -21,7 +21,7 @@ public class VitimaController {
 
     @PreAuthorize("hasRole('PRODUCT_INSERT')")
     @PostMapping
-    public Vitima create(@RequestBody Vitima vitima,  @RequestParam Long userId) {
+    public Vitima create(@RequestBody Vitima vitima, @RequestParam Long userId) {
         return vitimaService.create(vitima, userId);
     }
 

@@ -1,37 +1,38 @@
 package ufpa.libertapp.user;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
     public User create(User user) {
-        User existUser = userRepository.findByUsername(user.getUsername());
-        if (existUser != null) {
-            throw new Error("User already Exist");
+        // Encrypt the user's password before saving
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
+    }
+
+
+    @Override
+    public User view(String login, String password) {
+         UserDetails user = userRepository.findByLogin(login);
+        // Check if the user exists and if the password is correct
+        if (user != null && passwordEncoder.matches(password, user.getPassword())) {
+            return null;
         }
-        user.setPassword(passwordEncoder().encode(user.getPassword()));
-        User createdUser = userRepository.save(user);
-        return createdUser;
+        return null;
     }
 
     @Override
-    public User View(String username, String password) {
-        User user = userRepository.findByUsername(username);
-
-        if(user.getUsername().equals(username)  && passwordEncoder().matches(password,user.getPassword())){
-            return userRepository.findByUsername(username);
-        }
-        throw new Error("User not found");
+    public User findByLogin(String login) {
+        return null;
     }
 }
