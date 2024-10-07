@@ -28,7 +28,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/user").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/vitima").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST,"/curso").hasRole("vitima")
+                        .requestMatchers(HttpMethod.POST,"/orgao").hasRole("orgao")
                         .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

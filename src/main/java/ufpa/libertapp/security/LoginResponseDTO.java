@@ -1,5 +1,7 @@
 package ufpa.libertapp.security;
 
-public record LoginResponseDTO(String token) {
+import java.util.Collection;
+
+public record LoginResponseDTO(String token, Collection role) {
 
 }

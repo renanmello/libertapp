@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import ufpa.libertapp.user.User;
 import ufpa.libertapp.user.UserRepository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -41,6 +43,9 @@ public class VitimaServiceImpl implements VitimaService {
                 .orElseThrow(() -> new RuntimeException("Vítima não encontrada com o CPF: " + cpf));
         User user = userRepository.findById(vitima.getUser().getId())
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
+
+
+
         // Atualiza os campos necessários
         existingVitima.setNome(vitima.getNome());
         existingVitima.setCep(vitima.getCep());

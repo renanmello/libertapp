@@ -16,23 +16,24 @@ public class VitimaController {
 
     @GetMapping
     public Vitima viewDados(@RequestParam("cpf") String cpf) {
+
         return vitimaService.viewDados(cpf);
     }
 
-    @PreAuthorize("hasRole('PRODUCT_INSERT')")
+
     @PostMapping
     public Vitima create(@RequestBody Vitima vitima, @RequestParam Long userId) {
         return vitimaService.create(vitima, userId);
     }
 
-    @PreAuthorize("hasRole('PRODUCT_UPDATE')")
+
     @PutMapping("/{cpf}")
     public ResponseEntity<Vitima> update(@RequestBody Vitima vitima, @PathVariable String cpf) {
         Vitima updatedVitima = vitimaService.update(vitima, cpf);
         return ResponseEntity.ok(updatedVitima);
     }
 
-    @PreAuthorize("hasRole('PRODUCT_DELETE')")
+
     @DeleteMapping
     public void delete(@RequestParam("cpf") String cpf) {
         vitimaService.delete(cpf);
