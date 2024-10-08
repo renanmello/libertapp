@@ -22,12 +22,10 @@ Setup
     Clone the repository
 
     bash
-
-git clone https://github.com/yourusername/libertapp-backend.git
+    git clone https://github.com/yourusername/libertapp-backend.git
 
 Navigate to the project directory:
 
-bash
 
 cd libertapp-backend
 
