@@ -1,10 +1,11 @@
 package ufpa.libertapp.user;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,17 +23,16 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User view(String login, String password) {
-         UserDetails user = userRepository.findByLogin(login);
+    public User view(Long id) {
+        Optional<User> opuser = userRepository.findById(id);
+        User user = opuser.get();
         // Check if the user exists and if the password is correct
-        if (user != null && passwordEncoder.matches(password, user.getPassword())) {
-            return null;
+        if (user.getId() != null) {
+            return user;
         }
         return null;
     }
 
-    @Override
-    public User findByLogin(String login) {
-        return null;
-    }
+
+
 }

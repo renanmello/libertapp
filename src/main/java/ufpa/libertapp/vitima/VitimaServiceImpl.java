@@ -37,13 +37,18 @@ public class VitimaServiceImpl implements VitimaService {
     }
 
     @Override
-    public Vitima update(Vitima vitima, String cpf) {
+    public Vitima update(Vitima vitima, Long id) {
 
-        Vitima existingVitima = vitimaRepository.findById(cpf)
+        Optional<Vitima> optvitima = vitimaRepository.findByUserId(id);
+        Vitima existingVitima  = optvitima.get();
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
+
+        /*
+        Vitima = vitimaRepository.findById(cpf)
                 .orElseThrow(() -> new RuntimeException("Vítima não encontrada com o CPF: " + cpf));
         User user = userRepository.findById(vitima.getUser().getId())
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
-
+        */
 
 
         // Atualiza os campos necessários

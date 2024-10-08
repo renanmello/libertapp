@@ -6,7 +6,7 @@ public interface VitimaService {
 
     Vitima create(Vitima vitima, Long userId);
 
-    Vitima update(Vitima vitima, String cpf);
+    Vitima update(Vitima vitima, Long id);
 
     void delete(String cpf);
 

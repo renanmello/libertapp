@@ -27,9 +27,9 @@ public class VitimaController {
     }
 
 
-    @PutMapping("/{cpf}")
-    public ResponseEntity<Vitima> update(@RequestBody Vitima vitima, @PathVariable String cpf) {
-        Vitima updatedVitima = vitimaService.update(vitima, cpf);
+    @PutMapping("/{user_id}")
+    public ResponseEntity<Vitima> update(@RequestBody Vitima vitima, @PathVariable Long id) {
+        Vitima updatedVitima = vitimaService.update(vitima, id);
         return ResponseEntity.ok(updatedVitima);
     }
 

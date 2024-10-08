@@ -1,7 +1,9 @@
 package ufpa.libertapp.user;
 
+import java.util.Optional;
+
 public interface UserService {
     User create(User user);
-    User view(String username, String password);
-    User findByLogin(String username);
+    User view(Long id);
+
 }
