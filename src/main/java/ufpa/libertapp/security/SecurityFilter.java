@@ -25,12 +25,43 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Autowired
     UserRepository userRepository;
 
+    /*
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String token = recoverToken(request);
+
+        if (token != null) {
+            try {
+                String login = tokenService.validateToken(token); // Valida o token e obtém o login
+                if (login != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(login);
+
+                    if (userDetails != null) {
+                        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                                userDetails, null, userDetails.getAuthorities());
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                    }
+                }
+            } catch (RuntimeException e) {
+                // Token inválido ou expirado, logue o erro se necessário e continue sem autenticar
+                System.out.println("Erro ao validar o token: " + e.getMessage());
+            }
+        }
+
+        filterChain.doFilter(request, response);
+    }
+
+     */
+
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         var token = this.recoverToken(request);
+        System.out.println("Token: "+ token);
 
         if (token != null) {
             var login = tokenService.validateToken(token);
+            System.out.println("Login ....." + login);
             UserDetails user = userRepository.findByLogin(login);
 
             var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
@@ -39,9 +70,25 @@ public class SecurityFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+
+
+    private String recoverToken(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return null;
+        }
+        return authHeader.substring(7); // Remove "Bearer " para obter o token puro
+    }
+
+
+
+    /*
     public String recoverToken(HttpServletRequest request) {
         var authHeader = request.getHeader("Authorization");
         if (authHeader == null) return null;
         return authHeader.replace("Bearer ", "");
     }
+
+    */
+
 }

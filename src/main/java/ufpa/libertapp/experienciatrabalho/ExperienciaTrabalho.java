@@ -30,7 +30,7 @@ public class ExperienciaTrabalho {
 
 
     @ManyToOne
-    @JoinColumn(name = "vitima_cpf")  // Relacionamento com Vitima, FK para a tabela Vitima
+    @JoinColumn(name = "vitima_cpf", referencedColumnName = "cpf")  // Relacionamento com Vitima, FK para a tabela Vitima
     @JsonBackReference
     private Vitima vitima;
 

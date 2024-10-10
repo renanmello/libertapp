@@ -15,20 +15,20 @@ public class VitimaController {
 
 
     @GetMapping
-    public Vitima viewDados(@RequestParam("cpf") String cpf) {
+    public Vitima viewDados(@RequestParam("user_id") Long id) {
 
-        return vitimaService.viewDados(cpf);
+        return vitimaService.viewDados(id);
     }
 
 
-    @PostMapping
-    public Vitima create(@RequestBody Vitima vitima, @RequestParam Long userId) {
-        return vitimaService.create(vitima, userId);
+    @PostMapping("/{user_id}")
+    public ResponseEntity<Vitima> create(@RequestBody Vitima vitima, @PathVariable("user_id") Long user_id) {
+        return ResponseEntity.ok(vitimaService.create(vitima, user_id));
     }
 
 
     @PutMapping("/{user_id}")
-    public ResponseEntity<Vitima> update(@RequestBody Vitima vitima, @PathVariable Long id) {
+    public ResponseEntity<Vitima> update(@RequestBody Vitima vitima, @PathVariable("user_id") Long id) {
         Vitima updatedVitima = vitimaService.update(vitima, id);
         return ResponseEntity.ok(updatedVitima);
     }

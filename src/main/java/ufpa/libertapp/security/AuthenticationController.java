@@ -29,7 +29,9 @@ public class AuthenticationController {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         var auth = authenticationManager.authenticate(usernamePassword);
         User user = (User) userRepository.findByLogin(data.login());
-
+        System.out.println(auth.getPrincipal());
+        System.out.println(auth.getDetails());
+        System.out.println(auth.isAuthenticated());
 
         var token = tokenService.generateToken((User) auth.getPrincipal());
 
@@ -43,6 +45,6 @@ public class AuthenticationController {
         User newUser = new User(data.login(), crippass, data.role());
 
         this.userRepository.save(newUser);
-        return ResponseEntity.ok(new RegisterResponseDTO(newUser.getId()));
+        return ResponseEntity.ok(new RegisterResponseDTO(newUser.getId(), newUser.getLogin()));
     }
 }

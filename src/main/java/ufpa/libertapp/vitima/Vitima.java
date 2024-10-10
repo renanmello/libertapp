@@ -28,7 +28,7 @@ public class Vitima {
     private String cpf;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
     @JsonBackReference
     private User user;
 

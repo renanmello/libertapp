@@ -43,9 +43,10 @@ public class TokenService {
                     .withIssuer("libertapp")
                     .build()
                     .verify(token)
-                    .getSubject();
+                    .getSubject()
+                    ;
         } catch (JWTVerificationException e) {
-            return "Invalid token, try Again";
+            throw new RuntimeException("Token inválido ou expirado", e);
         }
     }
 

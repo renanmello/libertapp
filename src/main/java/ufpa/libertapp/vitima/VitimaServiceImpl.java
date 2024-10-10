@@ -22,13 +22,14 @@ public class VitimaServiceImpl implements VitimaService {
     }
 
     @Override
-    public Vitima viewDados(String cpf) {
-        return vitimaRepository.findById(cpf).orElseThrow(() -> new RuntimeException("Vitima não encontrada"));
+    public Vitima viewDados(Long id) {
+        return vitimaRepository.findByUserId(id);
     }
 
     @Override
     public Vitima create(Vitima vitima, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
+        System.out.println("User vitima: "+ user.getId());
         vitima.setUser(user);
         if (vitimaRepository.existsById(vitima.getCpf())) {
             throw new RuntimeException("CPF já cadastrado.");
@@ -39,8 +40,7 @@ public class VitimaServiceImpl implements VitimaService {
     @Override
     public Vitima update(Vitima vitima, Long id) {
 
-        Optional<Vitima> optvitima = vitimaRepository.findByUserId(id);
-        Vitima existingVitima  = optvitima.get();
+        Vitima existingVitima = vitimaRepository.findByUserId(id);
         User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
 
         /*
