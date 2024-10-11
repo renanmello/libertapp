@@ -32,6 +32,11 @@ public class Empresa {
     @JsonBackReference
     private Orgao orgao;
 
+    private String nome;
+
+    private String razao_social;
+
+
 
 
 }

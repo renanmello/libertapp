@@ -37,9 +37,6 @@ public class Orgao {
     @JsonManagedReference
     private List<Empresa> empresas_cad; //lista das empresas cadastradas pelo orgao
 
-    @OneToMany(mappedBy = "orgao", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<Vitima> vitimas_cad; //lista das vitimas liberadas para empresa
 
 
 }

@@ -66,10 +66,6 @@ public class Vitima {
 
     private boolean empregada;
 
-    @ManyToOne
-    @JoinColumn(name = "orgao_id")
-    @JsonBackReference
-    private Orgao orgao;
 
     public boolean getConfirmacao_termo() {
         return this.confirmacao_termo;
