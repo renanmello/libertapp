@@ -29,7 +29,7 @@ public class VitimaServiceImpl implements VitimaService {
     @Override
     public Vitima create(Vitima vitima, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
-        System.out.println("User vitima: "+ user.getId());
+
         vitima.setUser(user);
         if (vitimaRepository.existsById(vitima.getCpf())) {
             throw new RuntimeException("CPF já cadastrado.");

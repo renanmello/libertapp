@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ufpa.libertapp.curso.Curso;
 import ufpa.libertapp.experienciatrabalho.ExperienciaTrabalho;
+import ufpa.libertapp.orgao.Orgao;
 import ufpa.libertapp.user.User;
 
 import java.util.Date;
@@ -65,6 +66,10 @@ public class Vitima {
 
     private boolean empregada;
 
+    @ManyToOne
+    @JoinColumn(name = "orgao_id")
+    @JsonBackReference
+    private Orgao orgao;
 
     public boolean getConfirmacao_termo() {
         return this.confirmacao_termo;

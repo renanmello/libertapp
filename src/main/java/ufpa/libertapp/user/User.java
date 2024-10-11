@@ -10,6 +10,8 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ufpa.libertapp.empresa.Empresa;
+import ufpa.libertapp.orgao.Orgao;
 import ufpa.libertapp.vitima.Vitima;
 
 import java.util.Collection;
@@ -35,6 +37,13 @@ public class User implements UserDetails {
     @JsonManagedReference
     private Vitima vitima;
 
+    @OneToOne(mappedBy = "user")
+    @JsonManagedReference
+    private Orgao orgao;
+
+    @OneToOne(mappedBy = "user")
+    @JsonManagedReference
+    private Empresa empresa;
 
     private UserRole role;
 
