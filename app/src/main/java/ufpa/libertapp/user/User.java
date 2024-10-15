@@ -7,9 +7,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ufpa.libertapp.role.Role;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import ufpa.libertapp.empresa.Empresa;
+import ufpa.libertapp.orgao.Orgao;
 import ufpa.libertapp.vitima.Vitima;
 
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -18,13 +23,13 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
+    
+    private String login;
 
     private String password;
 
@@ -32,7 +37,57 @@ public class User {
     @JsonManagedReference
     private Vitima vitima;
 
-    @ManyToMany
-    private List<Role> roles;
+    @OneToOne(mappedBy = "user")
+    @JsonManagedReference
+    private Orgao orgao;
+
+    @OneToOne(mappedBy = "user")
+    @JsonManagedReference
+    private Empresa empresa;
+
+    private UserRole role;
+
+    public User(String login, String password, UserRole role) {
+        this.login = login;
+        this.password = password;
+        this.role = role;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"),
+                new SimpleGrantedAuthority("ROLE_VITIMA"), new SimpleGrantedAuthority("ROLE_EMPRESA"),
+                new SimpleGrantedAuthority("ROLE_ORGAO"));
+        if (this.role == UserRole.VITIMA) return List.of(new SimpleGrantedAuthority("ROLE_VITIMA"));
+        if (this.role == UserRole.EMPRESA) return List.of(new SimpleGrantedAuthority("ROLE_EMPRESA"));
+        if (this.role == UserRole.ORGAO) return List.of(new SimpleGrantedAuthority("ROLE_ORGAO"));
+
+        return null;
+    }
+
+    @Override
+    public String getUsername() {
+        return login;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired();
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return UserDetails.super.isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return UserDetails.super.isCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
+    }
 
 }

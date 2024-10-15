@@ -8,7 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ufpa.libertapp.curso.Curso;
 import ufpa.libertapp.experienciatrabalho.ExperienciaTrabalho;
+import ufpa.libertapp.orgao.Orgao;
 import ufpa.libertapp.user.User;
 
 import java.util.Date;
@@ -27,7 +29,7 @@ public class Vitima {
     private String cpf;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
     @JsonBackReference
     private User user;
 
@@ -52,6 +54,10 @@ public class Vitima {
     @OneToMany(mappedBy = "vitima", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<ExperienciaTrabalho> experiencias;
+
+    @OneToMany(mappedBy = "vitima", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Curso> cursos;
 
     @Lob
     private byte[] curriculoPdf;

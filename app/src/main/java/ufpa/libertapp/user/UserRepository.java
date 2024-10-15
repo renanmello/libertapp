@@ -1,13 +1,14 @@
 package ufpa.libertapp.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.userdetails.UserDetails;
 
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    User findByUsername(String username);
+    UserDetails findByLogin(String login);
+    User save(User user);
 
-    @Query("SELECT u FROM User u JOIN FETCH u.roles WHERE u.username = :username")
-    User findByUsernameFetchRoles(@Param("username") String username);
+
+
+
 }

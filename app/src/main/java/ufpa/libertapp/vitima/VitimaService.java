@@ -1,11 +1,13 @@
 package ufpa.libertapp.vitima;
 
-import ufpa.libertapp.product.Product;
 
 public interface VitimaService {
-    Vitima viewDados(String cpf);
-    Vitima create( Vitima vitima, Long userId);
-    Vitima update( Vitima vitima, String cpf);
+    Vitima viewDados(Long id);
+
+    Vitima create(Vitima vitima, Long user_id);
+
+    Vitima update(Vitima vitima, Long id);
+
     void delete(String cpf);
 
 }

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ufpa.libertapp.product.Product;
+
 
 @RestController
 @RequestMapping("/vitima")
@@ -13,26 +13,27 @@ public class VitimaController {
 
     private final VitimaService vitimaService;
 
-    @PreAuthorize("hasRole('PRODUCT_SELECT')")
+
     @GetMapping
-    public Vitima viewDados(@RequestParam("cpf") String cpf) {
-        return vitimaService.viewDados(cpf);
+    public Vitima viewDados(@RequestParam("user_id") Long id) {
+
+        return vitimaService.viewDados(id);
     }
 
-    @PreAuthorize("hasRole('PRODUCT_INSERT')")
-    @PostMapping
-    public Vitima create(@RequestBody Vitima vitima,  @RequestParam Long userId) {
-        return vitimaService.create(vitima, userId);
+
+    @PostMapping("/{user_id}")
+    public ResponseEntity<Vitima> create(@RequestBody Vitima vitima, @PathVariable("user_id") Long user_id) {
+        return ResponseEntity.ok(vitimaService.create(vitima, user_id));
     }
 
-    @PreAuthorize("hasRole('PRODUCT_UPDATE')")
-    @PutMapping("/{cpf}")
-    public ResponseEntity<Vitima> update(@RequestBody Vitima vitima, @PathVariable String cpf) {
-        Vitima updatedVitima = vitimaService.update(vitima, cpf);
+
+    @PutMapping("/{user_id}")
+    public ResponseEntity<Vitima> update(@RequestBody Vitima vitima, @PathVariable("user_id") Long id) {
+        Vitima updatedVitima = vitimaService.update(vitima, id);
         return ResponseEntity.ok(updatedVitima);
     }
 
-    @PreAuthorize("hasRole('PRODUCT_DELETE')")
+
     @DeleteMapping
     public void delete(@RequestParam("cpf") String cpf) {
         vitimaService.delete(cpf);
