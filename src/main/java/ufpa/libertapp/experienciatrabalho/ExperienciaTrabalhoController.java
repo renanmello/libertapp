@@ -1,10 +1,12 @@
 package ufpa.libertapp.experienciatrabalho;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ufpa.libertapp.vitima.VitimaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -16,14 +18,14 @@ public class ExperienciaTrabalhoController {
     private final ExperienciaTrabalhoService experienciaTrabalhoService;
 
 
-    @GetMapping("/{id}")
-    public ExperienciaTrabalho view(@RequestParam("id") Long id) {
-        return experienciaTrabalhoService.view(id);
+    @GetMapping("/{user_id}")
+    public List<ExperienciaTrabalho> view(@PathVariable("user_id") Long user_id) {
+        return experienciaTrabalhoService.view(user_id);
     }
 
 
-    @PostMapping
-    public ExperienciaTrabalho create(@RequestBody ExperienciaTrabalho experienciaTrabalho, @RequestParam Long id) {
-        return experienciaTrabalhoService.create(experienciaTrabalho, id);
+    @PostMapping("create/{user_id}")
+    public ResponseEntity<ExperienciaTrabalho> create(@RequestBody ExperienciaTrabalho experienciaTrabalho, @PathVariable("user_id") Long user_id) {
+        return ResponseEntity.ok(experienciaTrabalhoService.create(experienciaTrabalho, user_id));
     }
 }
