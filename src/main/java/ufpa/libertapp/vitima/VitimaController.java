@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/vitima")
@@ -20,6 +22,10 @@ public class VitimaController {
         return vitimaService.viewDados(id);
     }
 
+    @GetMapping("/all")
+    public List<Vitima> viewAll(){
+        return vitimaService.viewAll();
+    }
 
     @PostMapping("/{user_id}")
     public ResponseEntity<Vitima> create(@RequestBody Vitima vitima, @PathVariable("user_id") Long user_id) {

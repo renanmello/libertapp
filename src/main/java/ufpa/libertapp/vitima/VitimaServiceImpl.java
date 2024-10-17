@@ -82,4 +82,9 @@ public class VitimaServiceImpl implements VitimaService {
     public void delete(String cpf) {
         vitimaRepository.deleteById(cpf);
     }
+
+    @Override
+    public List<Vitima> viewAll() {
+        return vitimaRepository.findAll();
+    }
 }

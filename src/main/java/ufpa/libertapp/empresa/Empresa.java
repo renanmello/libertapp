@@ -19,8 +19,7 @@ import ufpa.libertapp.vitima.Vitima;
 public class Empresa {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long cnpj;
 
     @OneToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id")

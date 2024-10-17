@@ -1,6 +1,8 @@
 package ufpa.libertapp.vitima;
 
 
+import java.util.List;
+
 public interface VitimaService {
     Vitima viewDados(Long id);
 
@@ -10,4 +12,5 @@ public interface VitimaService {
 
     void delete(String cpf);
 
+    List<Vitima> viewAll();
 }
