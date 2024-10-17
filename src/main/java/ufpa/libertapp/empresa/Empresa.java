@@ -1,6 +1,7 @@
 package ufpa.libertapp.empresa;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,16 +20,17 @@ import ufpa.libertapp.vitima.Vitima;
 public class Empresa {
 
     @Id
-    private Long cnpj;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @OneToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id")
-    @JsonBackReference
+    @JsonIgnore
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "orgao_id")  // Relacionamento com orgao, FK para a tabela orgao
-    @JsonBackReference
+    @JsonIgnore
     private Orgao orgao;
 
     private String nome;

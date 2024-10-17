@@ -33,7 +33,7 @@ public class VitimaController {
     }
 
 
-    @PutMapping("/{user_id}")
+    @PutMapping("update/{user_id}")
     public ResponseEntity<Vitima> update(@RequestBody Vitima vitima, @PathVariable("user_id") Long id) {
         Vitima updatedVitima = vitimaService.update(vitima, id);
         return ResponseEntity.ok(updatedVitima);
