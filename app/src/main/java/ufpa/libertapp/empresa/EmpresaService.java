@@ -3,11 +3,11 @@ package ufpa.libertapp.empresa;
 
 
 public interface EmpresaService {
-    Empresa view(Long id);
+    Empresa view(Long cnpj);
 
-    Empresa create(Empresa empresa, Long id);
+    Empresa create(Empresa empresa, Long cnpj);
 
-    Empresa update(Empresa empresa, Long id);
+    Empresa update(Empresa empresa, Long cnpj);
 
-    void delete(Long id);
+    void delete(Long cnpj);
 }

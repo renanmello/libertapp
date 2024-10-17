@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import ufpa.libertapp.vitima.Vitima;
 import ufpa.libertapp.vitima.VitimaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,7 +23,7 @@ public class ExperienciaTrabalhoServiceImpl implements ExperienciaTrabalhoServic
 
 
     @Override
-    public ExperienciaTrabalho view(Long id) {
+    public List<ExperienciaTrabalho> view(Long id) {
         return experienciaTrabalhoRepository.findByUserId(id);
     }
 

@@ -1,6 +1,7 @@
 package ufpa.libertapp.curso;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,7 +28,7 @@ public class Curso {
 
     @ManyToOne
     @JoinColumn(name = "vitima_cpf")  // Relacionamento com Vitima, FK para a tabela Vitima
-    @JsonBackReference
+    @JsonIgnore
     private Vitima vitima;
 
 }
