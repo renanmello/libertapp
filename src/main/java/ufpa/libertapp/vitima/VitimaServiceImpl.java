@@ -34,6 +34,7 @@ public class VitimaServiceImpl implements VitimaService {
         if (vitimaRepository.existsById(vitima.getCpf())) {
             throw new RuntimeException("CPF já cadastrado.");
         }
+        vitima.setEmail(user.getUsername());
         return vitimaRepository.save(vitima);
     }
 
