@@ -30,7 +30,7 @@ public class Vitima {
 
     @OneToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id")
-    @JsonBackReference
+    @JsonIgnore
     private User user;
 
     private String nome;
@@ -52,11 +52,11 @@ public class Vitima {
     private String escolaridade;
 
     @OneToMany(mappedBy = "vitima", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonIgnore
     private List<ExperienciaTrabalho> experiencias;
 
     @OneToMany(mappedBy = "vitima", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonIgnore
     private List<Curso> cursos;
 
     @Lob
