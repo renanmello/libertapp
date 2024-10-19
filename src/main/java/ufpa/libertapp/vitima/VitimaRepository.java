@@ -19,6 +19,6 @@ public interface VitimaRepository extends JpaRepository<Vitima, String> {
     @Query("SELECT v FROM Vitima v JOIN v.cursos c WHERE LOWER(c.conteudo) LIKE LOWER(CONCAT('%', :conteudo, '%'))")
     List<Vitima> findByConteudoCurso(@Param("conteudo") String conteudo);
 
-    @Query("SELECT new ufpa.libertapp.vitima.VitimaDTO(v.nome, v.email, v.telefone, u.password,v.contactada) FROM Vitima v JOIN v.user u")
+    @Query("SELECT new ufpa.libertapp.vitima.VitimaDTO(v.nome, v.email, v.telefone, u.password, v.contactada) FROM Vitima v JOIN v.user u")
     List<VitimaDTO> findAllVitimaDetails();
 }

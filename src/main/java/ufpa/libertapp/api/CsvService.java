@@ -40,8 +40,8 @@ public class CsvService {
 
             // Lê o arquivo linha por linha e mapeia para a entidade Vitima
             List<Vitima> vitimas = reader.lines().skip(1) // Ignora cabeçalho
-                    .map(this::csvLineToVitima) // Converte cada linha em um objeto Vitima
-                    .collect(Collectors.toList());
+                .map(this::csvLineToVitima) // Converte cada linha em um objeto Vitima
+                .collect(Collectors.toList());
             // Log para verificar quantas vítimas foram processadas
             System.out.println("Número de vítimas processadas: " + vitimas.size());
 

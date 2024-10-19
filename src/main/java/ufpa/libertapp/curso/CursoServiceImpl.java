@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CursoServiceImpl implements CursoService{
+public class CursoServiceImpl implements CursoService {
     private final VitimaRepository vitimaRepository;
     private final CursoRepository cursoRepository;
 
