@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import ufpa.libertapp.user.User;
 import ufpa.libertapp.user.UserRepository;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -58,12 +60,16 @@ public class VitimaServiceImpl implements VitimaService {
         existingVitima.setCidade(vitima.getCidade());
         existingVitima.setEmail(vitima.getEmail());
         existingVitima.setEndereco(vitima.getEndereco());
+        existingVitima.setTelefone(vitima.getTelefone());
+        existingVitima.setRg(vitima.getRg());
+        existingVitima.setHorario(vitima.getHorario());
         existingVitima.setEstado(vitima.getEstado());
         existingVitima.setPcd(vitima.getPcd());
         existingVitima.setConfirmacao_termo(vitima.getConfirmacao_termo());
-        existingVitima.setCurriculoPdf(vitima.getCurriculoPdf());
+        existingVitima.setCurriculoPdf(null);
         existingVitima.setData_nascimento(vitima.getData_nascimento());
         existingVitima.setUser(user);
+        existingVitima.setContactada(true);
         //if(vitima.getCpf() == null){
         //    throw new RuntimeException("To update a record, you must have an CPF");
         //}
@@ -87,5 +93,10 @@ public class VitimaServiceImpl implements VitimaService {
     @Override
     public List<Vitima> viewAll() {
         return vitimaRepository.findAll();
+    }
+
+    @Override
+    public List<VitimaDTO> findAllVitimaDetails() {
+        return vitimaRepository.findAllVitimaDetails();
     }
 }

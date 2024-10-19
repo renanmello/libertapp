@@ -13,4 +13,6 @@ public interface VitimaService {
     void delete(String cpf);
 
     List<Vitima> viewAll();
+
+    List<VitimaDTO> findAllVitimaDetails();
 }

@@ -27,6 +27,12 @@ public class VitimaController {
         return vitimaService.viewAll();
     }
 
+    @GetMapping("/details")
+    public ResponseEntity<List<VitimaDTO>> getAllVitimasDetails(){
+        List<VitimaDTO> vitimaDetails = vitimaService.findAllVitimaDetails();
+        return ResponseEntity.ok(vitimaDetails);
+    }
+
     @PostMapping("/{user_id}")
     public ResponseEntity<Vitima> create(@RequestBody Vitima vitima, @PathVariable("user_id") Long user_id) {
         return ResponseEntity.ok(vitimaService.create(vitima, user_id));
