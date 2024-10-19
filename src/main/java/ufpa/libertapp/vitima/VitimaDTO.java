@@ -15,5 +15,4 @@ public class VitimaDTO {
     private String telefone;
     private String password;
     private boolean contactada;
-
 }

@@ -1,6 +1,6 @@
 package ufpa.libertapp.empresa;
 
-public class EmpresaServiceImpl implements EmpresaService{
+public class EmpresaServiceImpl implements EmpresaService {
     @Override
     public Empresa view(Long cnpj) {
         return null;
@@ -17,7 +17,5 @@ public class EmpresaServiceImpl implements EmpresaService{
     }
 
     @Override
-    public void delete(Long cnpj) {
-
-    }
+    public void delete(Long cnpj) {}
 }

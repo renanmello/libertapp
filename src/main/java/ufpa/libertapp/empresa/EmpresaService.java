@@ -1,7 +1,5 @@
 package ufpa.libertapp.empresa;
 
-
-
 public interface EmpresaService {
     Empresa view(Long cnpj);
 

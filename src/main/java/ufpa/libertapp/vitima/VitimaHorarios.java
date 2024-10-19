@@ -1,7 +1,6 @@
 package ufpa.libertapp.vitima;
 
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 public enum VitimaHorarios {

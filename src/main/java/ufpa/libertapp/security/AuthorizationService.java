@@ -9,7 +9,6 @@ import ufpa.libertapp.user.UserRepository;
 
 @Service
 public class AuthorizationService implements UserDetailsService {
-
     @Autowired
     UserRepository userRepository;
 

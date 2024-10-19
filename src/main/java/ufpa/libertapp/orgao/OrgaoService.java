@@ -8,5 +8,4 @@ public interface OrgaoService {
     Orgao update(Orgao orgao, Long id);
 
     void delete(Long id);
-
 }

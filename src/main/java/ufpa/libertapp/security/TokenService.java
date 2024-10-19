@@ -22,10 +22,10 @@ public class TokenService {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             String token = JWT.create()
-                    .withIssuer("libertapp")
-                    .withSubject(user.getLogin())
-                    .withExpiresAt(genExpirationDate())
-                    .sign(algorithm);
+                .withIssuer("libertapp")
+                .withSubject(user.getLogin())
+                .withExpiresAt(genExpirationDate())
+                .sign(algorithm);
             return token;
         } catch (JWTCreationException e) {
             throw new RuntimeException("Error while generating token", e);
@@ -40,14 +40,12 @@ public class TokenService {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)
-                    .withIssuer("libertapp")
-                    .build()
-                    .verify(token)
-                    .getSubject()
-                    ;
+                .withIssuer("libertapp")
+                .build()
+                .verify(token)
+                .getSubject();
         } catch (JWTVerificationException e) {
             throw new RuntimeException("Token inválido ou expirado", e);
         }
     }
-
 }

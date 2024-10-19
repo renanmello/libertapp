@@ -1,6 +1,5 @@
 package ufpa.libertapp.curso;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -16,7 +15,6 @@ import ufpa.libertapp.vitima.Vitima;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Curso {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,6 +28,4 @@ public class Curso {
     @JoinColumn(name = "vitima_cpf")  // Relacionamento com Vitima, FK para a tabela Vitima
     @JsonIgnore
     private Vitima vitima;
-
 }
-

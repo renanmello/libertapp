@@ -1,6 +1,5 @@
 package ufpa.libertapp.user;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -28,7 +27,6 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    
     private String login;
 
     private String password;
@@ -56,8 +54,8 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"),
-                new SimpleGrantedAuthority("ROLE_VITIMA"), new SimpleGrantedAuthority("ROLE_EMPRESA"),
-                new SimpleGrantedAuthority("ROLE_ORGAO"));
+            new SimpleGrantedAuthority("ROLE_VITIMA"), new SimpleGrantedAuthority("ROLE_EMPRESA"),
+            new SimpleGrantedAuthority("ROLE_ORGAO"));
         if (this.role == UserRole.VITIMA) return List.of(new SimpleGrantedAuthority("ROLE_VITIMA"));
         if (this.role == UserRole.EMPRESA) return List.of(new SimpleGrantedAuthority("ROLE_EMPRESA"));
         if (this.role == UserRole.ORGAO) return List.of(new SimpleGrantedAuthority("ROLE_ORGAO"));
@@ -89,5 +87,4 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
     }
-
 }

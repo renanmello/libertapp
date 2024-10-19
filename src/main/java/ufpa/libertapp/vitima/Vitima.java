@@ -1,8 +1,6 @@
 package ufpa.libertapp.vitima;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,11 +8,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ufpa.libertapp.curso.Curso;
 import ufpa.libertapp.experienciatrabalho.ExperienciaTrabalho;
-import ufpa.libertapp.orgao.Orgao;
 import ufpa.libertapp.user.User;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -24,8 +20,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Vitima {
-
-
     @Id
     private String cpf;
 
@@ -54,7 +48,7 @@ public class Vitima {
 
     private String rg;
 
-   private VitimaHorarios horario;
+    private VitimaHorarios horario;
 
     private String telefone;
 

@@ -1,7 +1,6 @@
 package ufpa.libertapp.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.keygen.KeyGenerators;
 import org.springframework.stereotype.Service;
@@ -17,17 +16,13 @@ import ufpa.libertapp.vitima.VitimaRepository;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class CsvService {
-
     private final VitimaRepository vitimaRepository;
     private final UserRepository userRepository;
 
@@ -61,7 +56,6 @@ public class CsvService {
 
     // Converte uma linha CSV em um objeto Vitima
     private Vitima csvLineToVitima(String line) {
-
         String[] fields = line.split(",");
         Vitima vitima = new Vitima();
         User user = new User();
@@ -142,5 +136,4 @@ public class CsvService {
         // Preencha outros campos conforme o CSV
         return vitima;
     }
-
 }

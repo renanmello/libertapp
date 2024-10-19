@@ -1,6 +1,5 @@
 package ufpa.libertapp.vitima;
 
-
 import java.util.List;
 
 public interface VitimaService {

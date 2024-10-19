@@ -7,9 +7,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface ExperienciaTrabalhoRepository extends JpaRepository<ExperienciaTrabalho,Long> {
-
-    //@Query(value = "select * from experiencia_trabalho e join vitima v on v.cpf = e.vitima_cpf  where v.user_id = :userId", nativeQuery = true)
-    //List<ExperienciaTrabalho> findByUserId(@Param("userId") Long id);
     @Query(value = "SELECT * FROM experiencia_trabalho e JOIN vitima v ON v.cpf = e.vitima_cpf WHERE v.user_id = :userId", nativeQuery = true)
     List<ExperienciaTrabalho> findByUserId(@Param("userId") Long userId);
 }

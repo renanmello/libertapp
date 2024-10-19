@@ -17,7 +17,5 @@ public class OrgaoServiceImpl implements OrgaoService{
     }
 
     @Override
-    public void delete(Long id) {
-
-    }
+    public void delete(Long id) {}
 }

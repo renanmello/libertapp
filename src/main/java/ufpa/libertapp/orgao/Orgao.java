@@ -8,9 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ufpa.libertapp.empresa.Empresa;
-import ufpa.libertapp.experienciatrabalho.ExperienciaTrabalho;
 import ufpa.libertapp.user.User;
-import ufpa.libertapp.vitima.Vitima;
 
 import java.util.List;
 
@@ -21,7 +19,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Orgao {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,7 +33,4 @@ public class Orgao {
     @OneToMany(mappedBy = "orgao", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Empresa> empresas_cad; //lista das empresas cadastradas pelo orgao
-
-
-
 }

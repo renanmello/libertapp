@@ -1,6 +1,5 @@
 package ufpa.libertapp.experienciatrabalho;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,7 +10,6 @@ import lombok.Setter;
 import ufpa.libertapp.vitima.Vitima;
 
 import java.time.LocalDate;
-
 
 @Entity
 @Table(name = "experiencia_trabalho")
@@ -29,10 +27,9 @@ public class ExperienciaTrabalho {
     private LocalDate dataInicio;
     private LocalDate dataFim;
 
-
     @ManyToOne
-    @JoinColumn(name = "vitima_cpf", referencedColumnName = "cpf")  // Relacionamento com Vitima, FK para a tabela Vitima
+    // Relacionamento com Vitima, FK para a tabela Vitima
+    @JoinColumn(name = "vitima_cpf", referencedColumnName = "cpf")
     @JsonIgnore
     private Vitima vitima;
-
 }

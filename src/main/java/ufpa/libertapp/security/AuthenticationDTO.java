@@ -1,4 +1,3 @@
 package ufpa.libertapp.security;
 
-public record AuthenticationDTO(String login, String password) {
-}
+public record AuthenticationDTO(String login, String password) {}

@@ -10,7 +10,6 @@ import java.util.List;
 @RequestMapping("/curso")
 @RequiredArgsConstructor
 public class CursoController {
-
     private final CursoService cursoService;
 
     @GetMapping("/{user_id}")
