@@ -45,6 +45,16 @@ public class VitimaController {
         return ResponseEntity.ok(updatedVitima);
     }
 
+    @GetMapping("/{userId}/cursos-exp")
+    public ResponseEntity<VitimaCursoExpDTO> getCursosEExperiencias(@PathVariable Long userId) {
+        VitimaCursoExpDTO cursoExpDTO = vitimaService.findCursoExpByUserId(userId);
+
+        if (cursoExpDTO != null) {
+            return ResponseEntity.ok(cursoExpDTO);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
     @DeleteMapping
     public void delete(@RequestParam("cpf") String cpf) {

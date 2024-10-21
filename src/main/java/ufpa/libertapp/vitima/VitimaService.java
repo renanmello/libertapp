@@ -15,4 +15,6 @@ public interface VitimaService {
     List<Vitima> viewAll();
 
     List<VitimaDTO> findAllVitimaDetails();
+
+    VitimaCursoExpDTO findCursoExpByUserId(Long userID);
 }

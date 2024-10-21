@@ -99,4 +99,9 @@ public class VitimaServiceImpl implements VitimaService {
     public List<VitimaDTO> findAllVitimaDetails() {
         return vitimaRepository.findAllVitimaDetails();
     }
+
+    @Override
+    public VitimaCursoExpDTO findCursoExpByUserId(Long userID) {
+        return vitimaRepository.findCursoExpByUserId(userID);
+    }
 }

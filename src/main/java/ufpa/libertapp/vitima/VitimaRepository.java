@@ -25,6 +25,13 @@ public interface VitimaRepository extends JpaRepository<Vitima, String> {
     @Query("SELECT new ufpa.libertapp.vitima.VitimaDTO(v.nome, v.email, v.telefone, u.password,v.contactada) FROM Vitima v JOIN v.user u")
     List<VitimaDTO> findAllVitimaDetails();
 
+    @Query("SELECT new ufpa.libertapp.vitima.VitimaCursoExpDTO(c.nome, c.conteudo, e.cargo, e.empresa) " +
+            "FROM Vitima v " +
+            "JOIN v.cursos c " +
+            "JOIN v.experiencias e " +
+            "WHERE v.user.id = :userId")
+    VitimaCursoExpDTO findCursoExpByUserId(@Param("userId") Long userId);
+
 
 
     //nome - telefone - email - senha
