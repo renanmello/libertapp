@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 public enum VitimaHorarios {
-    MANHÃ("manhã"),
+    MANHA("manha"),
     TARDE("tarde"),
     NOITE("noite"),
     INTEGRAL("integral");

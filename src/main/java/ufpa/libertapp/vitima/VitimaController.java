@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import ufpa.libertapp.curso.CursoDTO;
+import ufpa.libertapp.experienciatrabalho.ExperienciaDTO;
 
 import java.util.List;
 
@@ -47,13 +49,12 @@ public class VitimaController {
 
     @GetMapping("/{userId}/cursos-exp")
     public ResponseEntity<VitimaCursoExpDTO> getCursosEExperiencias(@PathVariable Long userId) {
-        VitimaCursoExpDTO cursoExpDTO = vitimaService.findCursoExpByUserId(userId);
+        List<CursoDTO> cursos = vitimaService.findCursosByUserId(userId);
+        List<ExperienciaDTO> experiencias = vitimaService.findExperienciasByUserId(userId);
 
-        if (cursoExpDTO != null) {
-            return ResponseEntity.ok(cursoExpDTO);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        VitimaCursoExpDTO vitimaCursoExpDTO = new VitimaCursoExpDTO(cursos, experiencias);
+
+        return ResponseEntity.ok(vitimaCursoExpDTO);
     }
 
     @DeleteMapping

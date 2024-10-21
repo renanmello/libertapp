@@ -2,6 +2,8 @@ package ufpa.libertapp.vitima;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ufpa.libertapp.curso.CursoDTO;
+import ufpa.libertapp.experienciatrabalho.ExperienciaDTO;
 import ufpa.libertapp.user.User;
 import ufpa.libertapp.user.UserRepository;
 
@@ -101,7 +103,14 @@ public class VitimaServiceImpl implements VitimaService {
     }
 
     @Override
-    public VitimaCursoExpDTO findCursoExpByUserId(Long userID) {
-        return vitimaRepository.findCursoExpByUserId(userID);
+    public List<CursoDTO> findCursosByUserId(Long userId) {
+        return vitimaRepository.findCursosByUserId(userId);
     }
+
+    @Override
+    public List<ExperienciaDTO> findExperienciasByUserId(Long userId) {
+        return vitimaRepository.findExperienciasByUserId(userId);
+    }
+
+
 }
