@@ -3,6 +3,8 @@ package ufpa.libertapp.vitima;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ufpa.libertapp.curso.CursoDTO;
+import ufpa.libertapp.experienciatrabalho.ExperienciaDTO;
 
 import java.util.List;
 
@@ -18,14 +20,14 @@ public class VitimaController {
     }
 
     @GetMapping("/all")
-    public List<Vitima> viewAll(){
+    public List<Vitima> viewAll() {
         return vitimaService.viewAll();
     }
 
     @GetMapping("/details")
-    public ResponseEntity<List<VitimaDTO>> getAllVitimasDetails(){
+    public ResponseEntity<List<VitimaDTO>> getAllVitimasDetails() {
         List<VitimaDTO> vitimaDetails = vitimaService.findAllVitimaDetails();
-        return ResponseEntity.ok(vitimaDetails);
+                return ResponseEntity.ok(vitimaDetails);
     }
 
     @PostMapping("/{user_id}")
@@ -38,6 +40,16 @@ public class VitimaController {
     public ResponseEntity<Vitima> update(@RequestBody Vitima vitima, @PathVariable("user_id") Long id) {
         Vitima updatedVitima = vitimaService.update(vitima, id);
         return ResponseEntity.ok(updatedVitima);
+    }
+
+    @GetMapping("/{userId}/cursos-exp")
+    public ResponseEntity<VitimaCursoExpDTO> getCursosEExperiencias(@PathVariable Long userId) {
+        List<CursoDTO> cursos = vitimaService.findCursosByUserId(userId);
+        List<ExperienciaDTO> experiencias = vitimaService.findExperienciasByUserId(userId);
+
+        VitimaCursoExpDTO vitimaCursoExpDTO = new VitimaCursoExpDTO(cursos, experiencias);
+
+        return ResponseEntity.ok(vitimaCursoExpDTO);
     }
 
     @DeleteMapping

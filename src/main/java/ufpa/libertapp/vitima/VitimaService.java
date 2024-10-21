@@ -1,5 +1,10 @@
 package ufpa.libertapp.vitima;
 
+
+import org.springframework.data.repository.query.Param;
+import ufpa.libertapp.curso.CursoDTO;
+import ufpa.libertapp.experienciatrabalho.ExperienciaDTO;
+
 import java.util.List;
 
 public interface VitimaService {
@@ -14,4 +19,8 @@ public interface VitimaService {
     List<Vitima> viewAll();
 
     List<VitimaDTO> findAllVitimaDetails();
+
+    List<CursoDTO> findCursosByUserId(Long userId);
+
+    List<ExperienciaDTO> findExperienciasByUserId(Long userId);
 }

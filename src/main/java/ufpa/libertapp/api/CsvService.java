@@ -67,7 +67,8 @@ public class CsvService {
         vitima.setNome(fields[1]);
         System.out.println("nome ok");
 
-        LocalDate data = LocalDate.parse(fields[2], DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        //LocalDate data = LocalDate.parse(fields[2], DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        LocalDate data = LocalDate.parse(fields[2]);
         vitima.setData_nascimento(data);
         System.out.println("data ok");
 
@@ -98,6 +99,7 @@ public class CsvService {
         System.out.println("estado ok");
 
         VitimaHorarios horario = VitimaHorarios.valueOf(fields[6].toUpperCase());
+        System.out.println("Horario gravado: "+horario.getHorario());
         vitima.setHorario(horario);
         System.out.println("horario ok");
 

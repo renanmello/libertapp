@@ -27,4 +27,18 @@ public class ExperienciaTrabalhoServiceImpl implements ExperienciaTrabalhoServic
         experienciaTrabalho.setVitima(vitima);
         return experienciaTrabalhoRepository.save(experienciaTrabalho);
     }
+
+    @Override
+    public ExperienciaTrabalho update(ExperienciaTrabalho experienciaTrabalho, Long userId,Long expId) {
+        Vitima vitima = vitimaRepository.findByUserId(userId);
+        ExperienciaTrabalho edit_exp = experienciaTrabalhoRepository.findById(expId).orElseThrow(() -> new RuntimeException("Experiencia nao cadastrada"));
+
+        edit_exp.setVitima(vitima);
+        edit_exp.setCargo(experienciaTrabalho.getCargo());
+        edit_exp.setNomeDaEmpresa(experienciaTrabalho.getNomeDaEmpresa());
+        edit_exp.setDataFim(experienciaTrabalho.getDataFim());
+        edit_exp.setDataInicio(experienciaTrabalho.getDataInicio());
+
+        return experienciaTrabalhoRepository.save(edit_exp);
+    }
 }

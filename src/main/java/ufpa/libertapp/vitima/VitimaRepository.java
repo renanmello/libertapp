@@ -3,6 +3,8 @@ package ufpa.libertapp.vitima;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import ufpa.libertapp.curso.CursoDTO;
+import ufpa.libertapp.experienciatrabalho.ExperienciaDTO;
 
 import java.util.List;
 
@@ -21,4 +23,22 @@ public interface VitimaRepository extends JpaRepository<Vitima, String> {
 
     @Query("SELECT new ufpa.libertapp.vitima.VitimaDTO(v.nome, v.email, v.telefone, u.password, v.contactada) FROM Vitima v JOIN v.user u")
     List<VitimaDTO> findAllVitimaDetails();
+
+
+    @Query("SELECT new ufpa.libertapp.curso.CursoDTO(c.id, c.nome, c.empresa_curso, c.horas, c.conteudo) " +
+            "FROM Vitima v " +
+            "JOIN v.cursos c " +
+            "WHERE v.user.id = :userId")
+    List<CursoDTO> findCursosByUserId(@Param("userId") Long userId);
+
+    @Query("SELECT new ufpa.libertapp.experienciatrabalho.ExperienciaDTO(e.id, e.nomeDaEmpresa, e.cargo, e.dataInicio, e.dataFim) " +
+            "FROM Vitima v " +
+            "JOIN v.experiencias e " +
+            "WHERE v.user.id = :userId")
+    List<ExperienciaDTO> findExperienciasByUserId(@Param("userId") Long userId);
+
+
+
+    //nome - telefone - email - senha
+
 }
