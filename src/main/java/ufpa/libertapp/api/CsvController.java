@@ -1,6 +1,7 @@
 package ufpa.libertapp.api;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,9 +20,14 @@ public class CsvController {
 
     @PostMapping("/upload")
     public ResponseEntity<String> uploadCSV(@RequestParam("file") MultipartFile file) {
+        long maxSize = 1024L * 1024L * 1024L;
+        if (file.getSize() > maxSize) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("File size exceeds the limit of 1 GB.");
+        }
         if (file.isEmpty()) {
             return ResponseEntity.status(400).body("Please upload a valid CSV file.");
         }
+
 
         try {
             csvService.save(file); // Processa o arquivo CSV

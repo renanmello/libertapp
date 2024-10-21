@@ -23,14 +23,14 @@ public class VitimaController {
     }
 
     @GetMapping("/all")
-    public List<Vitima> viewAll(){
+    public List<Vitima> viewAll() {
         return vitimaService.viewAll();
     }
 
     @GetMapping("/details")
-    public ResponseEntity<List<VitimaDTO>> getAllVitimasDetails(){
+    public ResponseEntity<List<VitimaDTO>> getAllVitimasDetails() {
         List<VitimaDTO> vitimaDetails = vitimaService.findAllVitimaDetails();
-        return ResponseEntity.ok(vitimaDetails);
+                return ResponseEntity.ok(vitimaDetails);
     }
 
     @PostMapping("/{user_id}")
