@@ -31,7 +31,8 @@ public class ExperienciaTrabalhoServiceImpl implements ExperienciaTrabalhoServic
     @Override
     public ExperienciaTrabalho update(ExperienciaTrabalho experienciaTrabalho, Long userId,Long expId) {
         Vitima vitima = vitimaRepository.findByUserId(userId);
-        ExperienciaTrabalho edit_exp = experienciaTrabalhoRepository.findById(expId).orElseThrow(() -> new RuntimeException("Experiencia nao cadastrada"));
+        ExperienciaTrabalho edit_exp = experienciaTrabalhoRepository.findById(expId).orElseThrow(()
+            -> new RuntimeException("Experiencia nao cadastrada"));
 
         edit_exp.setVitima(vitima);
         edit_exp.setCargo(experienciaTrabalho.getCargo());

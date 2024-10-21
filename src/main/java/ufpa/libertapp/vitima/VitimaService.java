@@ -1,7 +1,5 @@
 package ufpa.libertapp.vitima;
 
-
-import org.springframework.data.repository.query.Param;
 import ufpa.libertapp.curso.CursoDTO;
 import ufpa.libertapp.experienciatrabalho.ExperienciaDTO;
 

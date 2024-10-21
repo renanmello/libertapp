@@ -28,7 +28,8 @@ public class CursoServiceImpl implements CursoService {
     @Override
     public Curso update(Curso curso, Long userId, Long cursoId) {
         Vitima vitima = vitimaRepository.findByUserId(userId);
-        Curso edit_curso = cursoRepository.findById(cursoId).orElseThrow(() -> new RuntimeException("Curso nao cadastrado"));
+        Curso edit_curso = cursoRepository.findById(cursoId).orElseThrow(()
+            -> new RuntimeException("Curso nao cadastrado"));
 
         edit_curso.setEmpresa_curso(curso.getEmpresa_curso());
         edit_curso.setConteudo(curso.getConteudo());
@@ -36,12 +37,6 @@ public class CursoServiceImpl implements CursoService {
         edit_curso.setNome(curso.getNome());
         edit_curso.setHoras(curso.getHoras());
 
-
         return cursoRepository.save(edit_curso);
     }
-
-
-
-
-
 }

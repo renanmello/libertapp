@@ -12,7 +12,6 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class ExperienciaDTO {
-
     private Long id;
     private String nomeDaEmpresa;
     private String cargo;

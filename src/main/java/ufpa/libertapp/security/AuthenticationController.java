@@ -13,7 +13,6 @@ import ufpa.libertapp.user.UserRepository;
 @RestController
 @RequestMapping("auth")
 public class AuthenticationController {
-
     @Autowired
     private AuthenticationManager authenticationManager;
 

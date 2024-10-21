@@ -33,6 +33,7 @@ public class VitimaServiceImpl implements VitimaService {
         if (vitimaRepository.existsById(vitima.getCpf())) {
             throw new RuntimeException("CPF já cadastrado.");
         }
+
         vitima.setEmail(user.getUsername());
         return vitimaRepository.save(vitima);
     }
@@ -87,6 +88,4 @@ public class VitimaServiceImpl implements VitimaService {
     public List<ExperienciaDTO> findExperienciasByUserId(Long userId) {
         return vitimaRepository.findExperienciasByUserId(userId);
     }
-
-
 }

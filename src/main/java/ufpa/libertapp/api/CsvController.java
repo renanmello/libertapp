@@ -1,6 +1,5 @@
 package ufpa.libertapp.api;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +26,6 @@ public class CsvController {
         if (file.isEmpty()) {
             return ResponseEntity.status(400).body("Please upload a valid CSV file.");
         }
-
 
         try {
             csvService.save(file); // Processa o arquivo CSV
