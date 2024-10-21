@@ -13,6 +13,7 @@ import ufpa.libertapp.experienciatrabalho.ExperienciaTrabalho;
 import ufpa.libertapp.orgao.Orgao;
 import ufpa.libertapp.user.User;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class Vitima {
 
     private String nome;
 
-    private Date data_nascimento;
+    private LocalDate data_nascimento;
 
     private String email;
 
@@ -50,6 +51,12 @@ public class Vitima {
     private String endereco;
 
     private String escolaridade;
+
+    private String rg;
+
+   private VitimaHorarios horario;
+
+    private String telefone;
 
     @OneToMany(mappedBy = "vitima", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
@@ -66,6 +73,7 @@ public class Vitima {
 
     private boolean empregada;
 
+    private boolean contactada;
 
     public boolean getConfirmacao_termo() {
         return this.confirmacao_termo;

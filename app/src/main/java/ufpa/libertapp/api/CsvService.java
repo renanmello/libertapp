@@ -1,15 +1,17 @@
 package ufpa.libertapp.api;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.keygen.KeyGenerators;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.security.crypto.keygen.StringKeyGenerator;
 import org.springframework.web.multipart.MultipartFile;
 import ufpa.libertapp.user.User;
 import ufpa.libertapp.user.UserRepository;
 import ufpa.libertapp.user.UserRole;
 import ufpa.libertapp.vitima.Vitima;
+import ufpa.libertapp.vitima.VitimaHorarios;
 import ufpa.libertapp.vitima.VitimaRepository;
 
 import java.io.BufferedReader;
@@ -17,6 +19,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
@@ -28,7 +31,7 @@ public class CsvService {
     private final VitimaRepository vitimaRepository;
     private final UserRepository userRepository;
 
-
+    @Autowired
     public CsvService(VitimaRepository vitimaRepository, UserRepository userRepository) {
         this.vitimaRepository = vitimaRepository;
         this.userRepository = userRepository;
@@ -62,30 +65,29 @@ public class CsvService {
         String[] fields = line.split(",");
         Vitima vitima = new Vitima();
         User user = new User();
-        // campos csv cpf,nome,data_nascimento,email,cep,estado,cidade,escolaridade,endereco,pcd
+        //campos csv cpf[0],nome[1],data_nascimento[2],email[3],cep[4],estado[5],horario[6],
+        //rg[7],telefone[8],cidade[9],escolaridade[10],endereco[11],pcd[12]
         vitima.setCpf(fields[0]);
         System.out.println("cpf ok");
+
         vitima.setNome(fields[1]);
         System.out.println("nome ok");
-        Date data = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            Date date = formatter.parse(fields[2]);
-            vitima.setData_nascimento(date);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
 
-
+        //LocalDate data = LocalDate.parse(fields[2], DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        LocalDate data = LocalDate.parse(fields[2]);
+        vitima.setData_nascimento(data);
         System.out.println("data ok");
+
         vitima.setEmail(fields[3]);
         System.out.println("email ok");
-        if (vitima.getEmail() == null) {
-            user.setLogin(vitima.getCpf());
-        } else {
-            user.setLogin(vitima.getEmail());
-        }
-        String password = new BCryptPasswordEncoder().encode("vit1234");
+
+        user.setLogin(vitima.getCpf());
+        System.out.println("login ok");
+
+        StringKeyGenerator generator = KeyGenerators.string();
+        String pass = generator.generateKey();
+        String limitpass = pass.substring(0, Math.min(6, pass.length()));
+        String password = new BCryptPasswordEncoder().encode(limitpass);
         user.setPassword(password);
         user.setRole(UserRole.VITIMA);
         User new_user = userRepository.save(user);
@@ -95,39 +97,52 @@ public class CsvService {
 
         vitima.setCep(fields[4]);
         System.out.println("cep ok");
+
         vitima.setConfirmacao_termo(false);
+        System.out.println("confirmacao_termo ok");
 
         vitima.setEstado(fields[5]);
-        System.out.println("estadi ok");
-        vitima.setCidade(fields[6]);
+        System.out.println("estado ok");
+
+        VitimaHorarios horario = VitimaHorarios.valueOf(fields[6].toUpperCase());
+        System.out.println("Horario gravado: "+horario.getHorario());
+        vitima.setHorario(horario);
+        System.out.println("horario ok");
+
+        vitima.setRg(fields[7]);
+        System.out.println("rg ok");
+
+        vitima.setTelefone(fields[8]);
+        System.out.println("telefone ok");
+
+        vitima.setCidade(fields[9]);
         System.out.println("cidade ok");
-        vitima.setEscolaridade(fields[7]);
+
+        vitima.setEscolaridade(fields[10]);
         System.out.println("escolaridade ok");
+
         vitima.setCurriculoPdf(null);
-        vitima.setEndereco(fields[8]);
+        System.out.println("curriculoPdf ok");
+
+        vitima.setEndereco(fields[11]);
         System.out.println("endereco ok");
+
         vitima.setCursos(null);
+        System.out.println("cursos ok");
+
         vitima.setExperiencias(null);
+        System.out.println("experiencias ok");
+
         vitima.setEmpregada(false);
-        vitima.setPcd(fields[9]);
+        System.out.println("empregada ok");
+
+        vitima.setContactada(false);
+        System.out.println("Contactada ok");
+
+        vitima.setPcd(fields[12]);
         System.out.println("pcd ok");
         // Preencha outros campos conforme o CSV
         return vitima;
     }
-    /*
-        "cpf": "1121123337", check
-        "nome": "teste joao", check
-        "data_nascimento": "2020-01-01", check
-        "pcd": 0, check
-        "estado": "PA", check
-        "cidade": "belem", check
-        "cep": "655543", check
-        "endereco": "rua batatinha", check
-        "escolaridade":  "fundamental incompleto", check
-        "experiencias": null, check
-        "cursos": null, check
-        "curriculoPdf": null, check
-        "confirmacao_termo": 0, check
-        "empregada": 0 check
-*/
+
 }

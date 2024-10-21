@@ -22,4 +22,10 @@ public class CursoController {
     public ResponseEntity<Curso> create(@RequestBody Curso curso, @PathVariable("user_id") Long userId) {
         return ResponseEntity.ok(cursoService.create(curso, userId));
     }
+
+    @PutMapping("update/{userId}/{cursoId}")
+    public ResponseEntity<Curso> update(@RequestBody Curso curso, @PathVariable("userId") Long userId, @PathVariable("cursoId") Long cursoId){
+        return ResponseEntity.ok(cursoService.update(curso,userId,cursoId));
+
+    }
 }
