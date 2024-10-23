@@ -1,10 +1,8 @@
 package ufpa.libertapp.user;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
@@ -15,5 +13,12 @@ public class UserController {
     @PostMapping
     public User create(@RequestBody User user) {
         return userService.create(user);
+
+    }
+
+    @PutMapping("update/{userId}")
+    public ResponseEntity<User> update(@RequestBody User user,@PathVariable("userId")Long userId){
+        return ResponseEntity.ok(userService.update(user,userId));
+
     }
 }
