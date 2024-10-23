@@ -7,6 +7,9 @@ import org.springframework.security.crypto.keygen.KeyGenerators;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.keygen.StringKeyGenerator;
 import org.springframework.web.multipart.MultipartFile;
+import ufpa.libertapp.passwordresettoken.PasswordResetToken;
+import ufpa.libertapp.passwordresettoken.PasswordResetTokenRepository;
+import ufpa.libertapp.security.TokenService;
 import ufpa.libertapp.user.User;
 import ufpa.libertapp.user.UserRepository;
 import ufpa.libertapp.user.UserRole;
@@ -20,6 +23,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
@@ -30,11 +34,15 @@ public class CsvService {
 
     private final VitimaRepository vitimaRepository;
     private final UserRepository userRepository;
+    private final TokenService tokenService;
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
 
     @Autowired
-    public CsvService(VitimaRepository vitimaRepository, UserRepository userRepository) {
+    public CsvService(VitimaRepository vitimaRepository, UserRepository userRepository, TokenService tokenService, PasswordResetTokenRepository passwordResetTokenRepository) {
         this.vitimaRepository = vitimaRepository;
         this.userRepository = userRepository;
+        this.tokenService = tokenService;
+        this.passwordResetTokenRepository = passwordResetTokenRepository;
     }
 
     public void save(MultipartFile file) {
@@ -84,6 +92,7 @@ public class CsvService {
         user.setLogin(vitima.getCpf());
         System.out.println("login ok");
 
+        // criacao do usuario e da senha
         StringKeyGenerator generator = KeyGenerators.string();
         String pass = generator.generateKey();
         String limitpass = pass.substring(0, Math.min(6, pass.length()));
@@ -91,6 +100,15 @@ public class CsvService {
         user.setPassword(password);
         user.setRole(UserRole.VITIMA);
         User new_user = userRepository.save(user);
+
+        // armazenar a senha e o token de mudança no banco de dados
+
+        PasswordResetToken passwordResetToken = new PasswordResetToken();
+        passwordResetToken.setToken(tokenService.generatePasswordResetToken(new_user));
+        passwordResetToken.setUser(new_user);
+        passwordResetToken.setTemp_password(limitpass);
+        passwordResetToken.setExpirationTime(LocalDateTime.now().plusHours(730));
+        passwordResetTokenRepository.save(passwordResetToken);
 
         vitima.setUser(new_user);
         System.out.println("user ok");

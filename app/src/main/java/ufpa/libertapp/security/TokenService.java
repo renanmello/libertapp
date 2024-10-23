@@ -18,22 +18,36 @@ public class TokenService {
     @Value("${api.security.token.secret}")
     private String secret;
 
-    public String generateToken(User user) {
+    public String generateToken(User user){
+        return generateToken(user.getLogin(), 2); // Expira em 2 horas
+    }
+
+    public String generatePasswordResetToken(User user) {
+        return generateToken(user.getLogin(), 730); // Expira em 1 mes
+    }
+
+    public String generatePasswordForgotToken(User user) {
+        return generateToken(user.getLogin(), 1); // Expira em 1 hora
+    }
+
+    public String generateToken(String subject, int hoursToExpire) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             String token = JWT.create()
                     .withIssuer("libertapp")
-                    .withSubject(user.getLogin())
-                    .withExpiresAt(genExpirationDate())
+                    .withSubject(subject)
+                    .withExpiresAt(genExpirationDate(hoursToExpire))
                     .sign(algorithm);
+
             return token;
         } catch (JWTCreationException e) {
             throw new RuntimeException("Error while generating token", e);
         }
     }
 
-    private Instant genExpirationDate() {
-        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
+    private Instant genExpirationDate(int hours) {
+
+        return LocalDateTime.now().plusHours(hours).toInstant(ZoneOffset.of("-03:00"));
     }
 
     public String validateToken(String token) {
@@ -47,6 +61,40 @@ public class TokenService {
                     ;
         } catch (JWTVerificationException e) {
             throw new RuntimeException("Token inválido ou expirado", e);
+        }
+    }
+
+    // Valida o token de redefinição de senha
+    public boolean validatePasswordResetToken(String token, String userLogin) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+            String tokenSubject = JWT.require(algorithm)
+                    .withIssuer("libertapp")
+                    .build()
+                    .verify(token)
+                    .getSubject();
+
+            // Verifica se o token pertence ao usuário e se ainda é válido
+            return tokenSubject.equals(userLogin);
+        } catch (JWTVerificationException e) {
+            return false; // Token inválido ou expirado
+        }
+    }
+
+    // Valida o token de redefinição de senha
+    public boolean validatePasswordForgotToken(String token, String userLogin) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+            String tokenSubject = JWT.require(algorithm)
+                    .withIssuer("libertapp")
+                    .build()
+                    .verify(token)
+                    .getSubject();
+
+            // Verifica se o token pertence ao usuário e se ainda é válido
+            return tokenSubject.equals(userLogin);
+        } catch (JWTVerificationException e) {
+            return false; // Token inválido ou expirado
         }
     }
 
