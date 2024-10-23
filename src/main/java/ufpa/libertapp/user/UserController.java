@@ -13,12 +13,10 @@ public class UserController {
     @PostMapping
     public User create(@RequestBody User user) {
         return userService.create(user);
-
     }
 
     @PutMapping("update/{userId}")
-    public ResponseEntity<User> update(@RequestBody User user,@PathVariable("userId")Long userId){
-        return ResponseEntity.ok(userService.update(user,userId));
-
+    public ResponseEntity<User> update(@RequestBody User user, @PathVariable("userId") Long userId) {
+        return ResponseEntity.ok(userService.update(user, userId));
     }
 }

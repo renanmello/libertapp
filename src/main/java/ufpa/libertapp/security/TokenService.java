@@ -33,11 +33,10 @@ public class TokenService {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             String token = JWT.create()
-                    .withIssuer("libertapp")
-                    .withSubject(subject)
-                    .withExpiresAt(genExpirationDate(hoursToExpire))
-                    .sign(algorithm);
-
+                .withIssuer("libertapp")
+                .withSubject(subject)
+                .withExpiresAt(genExpirationDate(hoursToExpire))
+                .sign(algorithm);
             return token;
         } catch (JWTCreationException e) {
             throw new RuntimeException("Error while generating token", e);
@@ -45,7 +44,6 @@ public class TokenService {
     }
 
     private Instant genExpirationDate(int hours) {
-
         return LocalDateTime.now().plusHours(hours).toInstant(ZoneOffset.of("-03:00"));
     }
 
@@ -67,10 +65,10 @@ public class TokenService {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             String tokenSubject = JWT.require(algorithm)
-                    .withIssuer("libertapp")
-                    .build()
-                    .verify(token)
-                    .getSubject();
+                .withIssuer("libertapp")
+                .build()
+                .verify(token)
+                .getSubject();
 
             // Verifica se o token pertence ao usuário e se ainda é válido
             return tokenSubject.equals(userLogin);
@@ -84,10 +82,10 @@ public class TokenService {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             String tokenSubject = JWT.require(algorithm)
-                    .withIssuer("libertapp")
-                    .build()
-                    .verify(token)
-                    .getSubject();
+                .withIssuer("libertapp")
+                .build()
+                .verify(token)
+                .getSubject();
 
             // Verifica se o token pertence ao usuário e se ainda é válido
             return tokenSubject.equals(userLogin);
@@ -95,5 +93,4 @@ public class TokenService {
             return false; // Token inválido ou expirado
         }
     }
-
 }

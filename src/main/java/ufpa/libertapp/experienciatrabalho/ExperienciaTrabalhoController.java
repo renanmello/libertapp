@@ -24,6 +24,6 @@ public class ExperienciaTrabalhoController {
 
     @PutMapping("update/{user_id}/{exp_id}")
     public ResponseEntity<ExperienciaTrabalho> update(@RequestBody ExperienciaTrabalho experienciaTrabalho, @PathVariable("user_id") Long user_id, @PathVariable("exp_id") Long exp_id) {
-        return ResponseEntity.ok(experienciaTrabalhoService.update(experienciaTrabalho,user_id,exp_id));
+        return ResponseEntity.ok(experienciaTrabalhoService.update(experienciaTrabalho, user_id, exp_id));
     }
 }

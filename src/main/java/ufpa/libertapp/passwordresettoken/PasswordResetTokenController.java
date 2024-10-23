@@ -31,7 +31,8 @@ public class PasswordResetTokenController {
     @PostMapping("/request-password")
     public ResponseEntity<?> forgotPassword(@RequestParam String login) {
         User user = (User) userRepository.findByLogin(login);
-        PasswordResetToken before = passwordResetTokenRepository.findByUserLogin(login).orElseThrow(()-> new RuntimeException("token nao encontrado"));
+        PasswordResetToken before = passwordResetTokenRepository.findByUserLogin(login).orElseThrow(()
+            -> new RuntimeException("token nao encontrado"));
         if (user == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
@@ -51,7 +52,6 @@ public class PasswordResetTokenController {
         before.setTemp_password(before.getTemp_password());
         passwordResetTokenRepository.save(before);
 
-
         return ResponseEntity.ok("Password reset link sent");
     }
 
@@ -63,7 +63,6 @@ public class PasswordResetTokenController {
         if (resetTokenOpt.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Token");
         }
-
 
         PasswordResetToken resetToken = resetTokenOpt.get();
 
@@ -81,6 +80,4 @@ public class PasswordResetTokenController {
 
         return ResponseEntity.ok("Password successfully reset");
     }
-
-
 }
