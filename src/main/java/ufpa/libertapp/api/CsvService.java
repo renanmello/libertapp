@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,36 +46,86 @@ public class CsvService {
         this.passwordResetTokenRepository = passwordResetTokenRepository;
     }
 
-    public void save(MultipartFile file) {
+    public List<String> save(MultipartFile file) {
+        List<String> errors = new ArrayList<>(); // Lista de erros
+        int lineNumber = 0; // Contador de linhas
+        int vitNumber = 0; // Contador de vitimas
+
+
         try (BufferedReader reader = new BufferedReader(
                 new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))) {
             // Log para verificar o processamento
             System.out.println("Iniciando o processamento do arquivo CSV...");
 
+            String line;
+            boolean isFirstLine = true; // Variável para identificar o cabeçalho
+
+            while ((line = reader.readLine()) != null) {
+                lineNumber++; // Incrementa o número da linha
+
+                if (isFirstLine) {
+                    // Pula a primeira linha (cabeçalho)
+                    isFirstLine = false;
+                    continue;
+                }
+
+                try {
+                    Vitima vitima = csvLineToVitima(line);
+                    // Verifica se o CPF já existe no banco de dados
+                    if (vitimaRepository.existsById(vitima.getCpf())) {
+                        String errorMsg = "Linha " + lineNumber + ": CPF " + vitima.getCpf() + " já cadastrado.";
+                        System.out.println(errorMsg); // Log do CPF duplicado
+
+                        errors.add(errorMsg); // Adiciona à lista de erros
+                        continue; // Pula o registro se o CPF já existir
+                    }
+                    vitimaRepository.save(vitima); // Salva o registro
+                    vitNumber++;
+                } catch (Exception e) {
+                    // Adiciona uma mensagem de erro para aquela linha
+
+                    String errorStr = "Erro na linha " + lineNumber + ": " + e.getMessage();
+                    errors.add(errorStr);
+                }
+            }
+
+            // código antigo pra cadastrar vitimas sem retorno de erros
+             /*
             // Lê o arquivo linha por linha e mapeia para a entidade Vitima
             List<Vitima> vitimas = reader.lines().skip(1) // Ignora cabeçalho
                     .map(this::csvLineToVitima) // Converte cada linha em um objeto Vitima
                     .collect(Collectors.toList());
             // Log para verificar quantas vítimas foram processadas
-            System.out.println("Número de vítimas processadas: " + vitimas.size());
+            */
 
             // Salva todas as vítimas no banco de dados
-            vitimaRepository.saveAll(vitimas);
+            //vitimaRepository.saveAll(vitimas);
 
-            System.out.println("Dados salvos no banco de dados.");
+            //System.out.println("Dados salvos no banco de dados.");
+            //System.out.println("Número de vítimas processadas: " + vitimas.size());
+            System.out.println("Número de vítimas processadas e salvas: " + vitNumber);
+            return errors;
         } catch (Exception e) {
             throw new RuntimeException("Error processing CSV file", e);
         }
     }
 
     // Converte uma linha CSV em um objeto Vitima
-    private Vitima csvLineToVitima(String line) {
+    private Vitima csvLineToVitima(String line) throws Exception {
 
         String[] fields = line.split(",");
+
+
+        // Verifica se a linha tem o número correto de campos
+        if (fields.length < 13) {
+            throw new Exception("Linha incompleta. Esperado 13 campos, mas recebido " + fields.length);
+        }
+
         Vitima vitima = new Vitima();
         User user = new User();
         //campos csv cpf[0],nome[1],data_nascimento[2],email[3],cep[4],estado[5],horario[6],
         //rg[7],telefone[8],cidade[9],escolaridade[10],endereco[11],pcd[12]
+
         vitima.setCpf(fields[0]);
         System.out.println("cpf ok");
 
@@ -123,7 +174,7 @@ public class CsvService {
         System.out.println("estado ok");
 
         VitimaHorarios horario = VitimaHorarios.valueOf(fields[6].toUpperCase());
-        System.out.println("Horario gravado: "+horario.getHorario());
+        System.out.println("Horario gravado: " + horario.getHorario());
         vitima.setHorario(horario);
         System.out.println("horario ok");
 
