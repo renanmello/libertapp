@@ -36,7 +36,7 @@ public class CsvController {
             if (errors.isEmpty()) {
                 return ResponseEntity.ok("File uploaded and processed successfully.");
             } else {
-                System.out.println("Erros durante o processamento:");
+                System.out.println("Data processing error:");
                 errors.forEach(System.out::println); // Imprime cada erro no console
                 return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).body(errors); // Retorna os erros
             }
