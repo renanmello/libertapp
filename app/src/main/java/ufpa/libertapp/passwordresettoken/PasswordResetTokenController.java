@@ -40,7 +40,7 @@ public class PasswordResetTokenController {
         String token = tokenService.generatePasswordForgotToken(user);
         // Aqui você envia o email com o token gerado
 
-        String resetLink = "http://seu-site.com/reset-password?token=" + token;
+        String resetLink = "http://localhost:8080/reset-password?token=" + token;
         System.out.println("Link de redefinição: " + resetLink);
         // sendEmail(user.getEmail(), resetLink);
 
