@@ -17,11 +17,9 @@ public class VitimaController {
 
     private final VitimaService vitimaService;
 
-
-    @GetMapping
-    public Vitima viewDados(@RequestParam("user_id") Long id) {
-
-        return vitimaService.viewDados(id);
+    @GetMapping("/get/{user_id}")
+    public Vitima viewDados(@PathVariable("user_id") Long user_id) {
+        return vitimaService.viewDados(user_id);
     }
 
     @GetMapping("/all")
@@ -42,8 +40,8 @@ public class VitimaController {
 
 
     @PutMapping("update/{user_id}")
-    public ResponseEntity<Vitima> update(@RequestBody Vitima vitima, @PathVariable("user_id") Long id) {
-        Vitima updatedVitima = vitimaService.update(vitima, id);
+    public ResponseEntity<Vitima> update(@RequestBody Vitima vitima, @PathVariable("user_id") Long user_id) {
+        Vitima updatedVitima = vitimaService.update(vitima, user_id);
         return ResponseEntity.ok(updatedVitima);
     }
 
