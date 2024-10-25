@@ -61,17 +61,6 @@ public class VitimaServiceImpl implements VitimaService {
         existingVitima.setUser(user);
         existingVitima.setContactada(true);
         existingVitima.setEscolaridade(vitima.getEscolaridade());
-        //if(vitima.getCpf() == null){
-        //    throw new RuntimeException("To update a record, you must have an CPF");
-        //}
-
-        // Atualiza o usuário, se necessário
-        //if (vitima.getUser() != null) {
-        //    User user = userRepository.findById(vitima.getUser().getId())
-        //            .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
-        //    existingVitima.setUser(user);
-        //}
-
 
         return vitimaRepository.save(existingVitima);
     }
