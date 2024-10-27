@@ -72,6 +72,7 @@ public class VitimaServiceImpl implements VitimaService {
         existingVitima.setData_nascimento(vitima.getData_nascimento());
         existingVitima.setUser(user);
         existingVitima.setContactada(true);
+        existingVitima.setEscolaridade(vitima.getEscolaridade());
         //if(vitima.getCpf() == null){
         //    throw new RuntimeException("To update a record, you must have an CPF");
         //}
