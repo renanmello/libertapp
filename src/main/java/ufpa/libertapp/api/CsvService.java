@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.keygen.KeyGenerators;
 import org.springframework.stereotype.Service;
-import org.springframework.security.crypto.keygen.StringKeyGenerator;
 import org.springframework.web.multipart.MultipartFile;
 import ufpa.libertapp.passwordresettoken.PasswordResetToken;
 import ufpa.libertapp.passwordresettoken.PasswordResetTokenRepository;
@@ -15,7 +14,6 @@ import ufpa.libertapp.user.UserRole;
 import ufpa.libertapp.vitima.Vitima;
 import ufpa.libertapp.vitima.VitimaHorarios;
 import ufpa.libertapp.vitima.VitimaRepository;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -24,16 +22,17 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Service
 public class CsvService {
+
     private final VitimaRepository vitimaRepository;
     private final UserRepository userRepository;
     private final TokenService tokenService;
     private final PasswordResetTokenRepository passwordResetTokenRepository;
 
     @Autowired
-    public CsvService(VitimaRepository vitimaRepository, UserRepository userRepository,
-            TokenService tokenService, PasswordResetTokenRepository passwordResetTokenRepository) {
+    public CsvService(VitimaRepository vitimaRepository, UserRepository userRepository, TokenService tokenService, PasswordResetTokenRepository passwordResetTokenRepository) {
         this.vitimaRepository = vitimaRepository;
         this.userRepository = userRepository;
         this.tokenService = tokenService;
@@ -41,170 +40,105 @@ public class CsvService {
     }
 
     public List<String> save(MultipartFile file) {
-        List<String> errors = new ArrayList<>(); // Lista de erros
-        int lineNumber = 0; // Contador de linhas
-        int vitNumber = 0; // Contador de vitimas
+        List<String> errors = new ArrayList<>();
+        int lineNumber = 0;
 
-
-        try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))) {
-            // Log para verificar o processamento
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))) {
             System.out.println("Iniciando o processamento do arquivo CSV...");
-
             String line;
-            boolean isFirstLine = true; // Variável para identificar o cabeçalho
+            boolean isFirstLine = true;
 
             while ((line = reader.readLine()) != null) {
-                lineNumber++; // Incrementa o número da linha
-
+                lineNumber++;
                 if (isFirstLine) {
-                    // Pula a primeira linha (cabeçalho)
                     isFirstLine = false;
                     continue;
                 }
 
+                String[] fields = line.split(",");
+                StringBuilder lineErrors = new StringBuilder("Erro na linha " + lineNumber + ": ");
+
                 try {
-                    Vitima vitima = csvLineToVitima(line);
-                    // Verifica se o CPF já existe no banco de dados
-                    if (vitimaRepository.existsById(vitima.getCpf())) {
-                        String errorMsg = "Linha " + lineNumber + ": CPF " + vitima.getCpf() + " já cadastrado.";
-                        System.out.println(errorMsg); // Log do CPF duplicado
-
-                        errors.add(errorMsg); // Adiciona à lista de erros
-                        continue; // Pula o registro se o CPF já existir
+                    if (fields.length < 13) {
+                        errors.add(lineErrors.append("Linha incompleta. Esperado 13 campos, mas recebido ").append(fields.length).toString());
+                        continue;
                     }
-                    vitimaRepository.save(vitima); // Salva o registro
-                    vitNumber++;
-                } catch (Exception e) {
-                    // Adiciona uma mensagem de erro para aquela linha
 
-                    String errorStr = "Erro na linha " + lineNumber + ": " + e.getMessage();
-                    errors.add(errorStr);
+                    if (fields[0].isEmpty()) lineErrors.append("CPF está vazio. ");
+                    if (fields[1].isEmpty()) lineErrors.append("Nome está vazio. ");
+                    if (fields[2].isEmpty()) lineErrors.append("Data de nascimento está vazia. ");
+                    if (fields[3].isEmpty()) lineErrors.append("Email está vazio. ");
+                    if (fields[4].isEmpty()) lineErrors.append("CEP está vazio. ");
+                    if (fields[5].isEmpty()) lineErrors.append("Estado está vazio. ");
+                    if (fields[6].isEmpty()) lineErrors.append("Horário está vazio. ");
+                    if (fields[7].isEmpty()) lineErrors.append("RG está vazio. ");
+                    if (fields[8].isEmpty()) lineErrors.append("Telefone está vazio. ");
+                    if (fields[9].isEmpty()) lineErrors.append("Cidade está vazia. ");
+                    if (fields[10].isEmpty()) lineErrors.append("Escolaridade está vazia. ");
+                    if (fields[11].isEmpty()) lineErrors.append("Endereço está vazio. ");
+                    if (fields[12].isEmpty()) lineErrors.append("PCD está vazio. ");
+
+                    if (lineErrors.length() > ("Erro na linha " + lineNumber + ": ").length()) {
+                        errors.add(lineErrors.toString());
+                        continue; // Pula o registro se houver campos obrigatórios vazios
+                    }
+
+                    if (vitimaRepository.existsById(fields[0])) {
+                        errors.add("Linha " + lineNumber + ": CPF " + fields[0] + " já cadastrado.");
+                        continue;
+                    }
+
+                    // Criação de usuário e senha
+                    User user = new User();
+                    user.setLogin(fields[0]);
+                    String tempPassword = KeyGenerators.string().generateKey().substring(0, 6);
+                    String encodedPassword = new BCryptPasswordEncoder().encode(tempPassword);
+                    user.setPassword(encodedPassword);
+                    user.setRole(UserRole.VITIMA);
+                    User savedUser = userRepository.save(user);
+
+                    // Criação do token de redefinição de senha
+                    PasswordResetToken passwordResetToken = new PasswordResetToken();
+                    passwordResetToken.setToken(tokenService.generatePasswordResetToken(savedUser));
+                    passwordResetToken.setUser(savedUser);
+                    passwordResetToken.setTemp_password(tempPassword);
+                    passwordResetToken.setExpirationTime(LocalDateTime.now().plusHours(730));
+                    PasswordResetToken savedToken = passwordResetTokenRepository.save(passwordResetToken);
+
+                    try {
+                        // Criação e associação de vítima ao usuário
+                        Vitima vitima = new Vitima();
+                        vitima.setCpf(fields[0]);
+                        vitima.setNome(fields[1]);
+                        vitima.setData_nascimento(LocalDate.parse(fields[2]));
+                        vitima.setEmail(fields[3]);
+                        vitima.setCep(fields[4]);
+                        vitima.setEstado(fields[5]);
+                        vitima.setHorario(VitimaHorarios.valueOf(fields[6].toUpperCase()));
+                        vitima.setRg(fields[7]);
+                        vitima.setTelefone(fields[8]);
+                        vitima.setCidade(fields[9]);
+                        vitima.setEscolaridade(fields[10]);
+                        vitima.setEndereco(fields[11]);
+                        vitima.setPcd(fields[12]);
+                        vitima.setUser(savedUser);
+
+                        vitimaRepository.save(vitima);
+
+                    } catch (Exception e) {
+                        userRepository.delete(savedUser);
+                        passwordResetTokenRepository.delete(savedToken);
+                        errors.add("Erro na linha " + lineNumber + ": Falha ao salvar a vítima - " + e.getMessage());
+                    }
+
+                } catch (Exception e) {
+                    errors.add("Erro na linha " + lineNumber + ": " + e.getMessage());
                 }
             }
 
-            // código antigo pra cadastrar vitimas sem retorno de erros
-             /*
-            // Lê o arquivo linha por linha e mapeia para a entidade Vitima
-            List<Vitima> vitimas = reader.lines().skip(1) // Ignora cabeçalho
-                .map(this::csvLineToVitima) // Converte cada linha em um objeto Vitima
-                .collect(Collectors.toList());
-            // Log para verificar quantas vítimas foram processadas
-            */
-
-            // Salva todas as vítimas no banco de dados
-            //vitimaRepository.saveAll(vitimas);
-
-            //System.out.println("Dados salvos no banco de dados.");
-            //System.out.println("Número de vítimas processadas: " + vitimas.size());
-            System.out.println("Número de vítimas processadas e salvas: " + vitNumber);
             return errors;
         } catch (Exception e) {
-            throw new RuntimeException("Error processing CSV file", e);
+            throw new RuntimeException("Erro ao processar o arquivo CSV: " + e.getMessage());
         }
-    }
-
-    // Converte uma linha CSV em um objeto Vitima
-    private Vitima csvLineToVitima(String line) throws Exception {
-
-        String[] fields = line.split(",");
-
-
-        // Verifica se a linha tem o número correto de campos
-        if (fields.length < 13) {
-            throw new Exception("Linha incompleta. Esperado 13 campos, mas recebido " + fields.length);
-        }
-
-        Vitima vitima = new Vitima();
-        User user = new User();
-        //campos csv cpf[0],nome[1],data_nascimento[2],email[3],cep[4],estado[5],horario[6],
-        //rg[7],telefone[8],cidade[9],escolaridade[10],endereco[11],pcd[12]
-
-        vitima.setCpf(fields[0]);
-        System.out.println("cpf ok");
-
-        vitima.setNome(fields[1]);
-        System.out.println("nome ok");
-
-        //LocalDate data = LocalDate.parse(fields[2], DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        LocalDate data = LocalDate.parse(fields[2]);
-        vitima.setData_nascimento(data);
-        System.out.println("data ok");
-
-        vitima.setEmail(fields[3]);
-        System.out.println("email ok");
-
-        user.setLogin(vitima.getCpf());
-        System.out.println("login ok");
-
-        // criacao do usuario e da senha
-        StringKeyGenerator generator = KeyGenerators.string();
-        String pass = generator.generateKey();
-        String limitpass = pass.substring(0, Math.min(6, pass.length()));
-        String password = new BCryptPasswordEncoder().encode(limitpass);
-        user.setPassword(password);
-        user.setRole(UserRole.VITIMA);
-        User new_user = userRepository.save(user);
-
-        // armazenar a senha e o token de mudança no banco de dados
-
-        PasswordResetToken passwordResetToken = new PasswordResetToken();
-        passwordResetToken.setToken(tokenService.generatePasswordResetToken(new_user));
-        passwordResetToken.setUser(new_user);
-        passwordResetToken.setTemp_password(limitpass);
-        passwordResetToken.setExpirationTime(LocalDateTime.now().plusHours(730));
-        passwordResetTokenRepository.save(passwordResetToken);
-
-        vitima.setUser(new_user);
-        System.out.println("user ok");
-
-        vitima.setCep(fields[4]);
-        System.out.println("cep ok");
-
-        vitima.setConfirmacao_termo(false);
-        System.out.println("confirmacao_termo ok");
-
-        vitima.setEstado(fields[5]);
-        System.out.println("estado ok");
-
-        VitimaHorarios horario = VitimaHorarios.valueOf(fields[6].toUpperCase());
-        System.out.println("Horario gravado: " + horario.getHorario());
-        vitima.setHorario(horario);
-        System.out.println("horario ok");
-
-        vitima.setRg(fields[7]);
-        System.out.println("rg ok");
-
-        vitima.setTelefone(fields[8]);
-        System.out.println("telefone ok");
-
-        vitima.setCidade(fields[9]);
-        System.out.println("cidade ok");
-
-        vitima.setEscolaridade(fields[10]);
-        System.out.println("escolaridade ok");
-
-        vitima.setCurriculoPdf(null);
-        System.out.println("curriculoPdf ok");
-
-        vitima.setEndereco(fields[11]);
-        System.out.println("endereco ok");
-
-        vitima.setCursos(null);
-        System.out.println("cursos ok");
-
-        vitima.setExperiencias(null);
-        System.out.println("experiencias ok");
-
-        vitima.setEmpregada(false);
-        System.out.println("empregada ok");
-
-        vitima.setContactada(false);
-        System.out.println("Contactada ok");
-
-        vitima.setPcd(fields[12]);
-        System.out.println("pcd ok");
-        // Preencha outros campos conforme o CSV
-        return vitima;
     }
 }
