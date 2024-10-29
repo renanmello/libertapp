@@ -34,7 +34,7 @@ public class Empresa {
     private Orgao orgao;
 
     private String nome;
-
+    private String cnpj;
     private String razao_social;
 
 

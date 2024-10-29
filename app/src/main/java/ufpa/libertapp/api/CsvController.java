@@ -21,29 +21,32 @@ public class CsvController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<?> uploadCSV(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<CsvResponse> uploadCSV(@RequestParam("file") MultipartFile file) {
         long maxSize = 1024L * 1024L * 1024L;
         if (file.getSize() > maxSize) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("File size exceeds the limit of 1 GB.");
+            CsvResponse response = new CsvResponse("File size exceeds the limit of 1 GB.", null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
         if (file.isEmpty()) {
-            return ResponseEntity.status(400).body("Please upload a valid CSV file.");
+            CsvResponse response = new CsvResponse("Please upload a valid CSV file.", null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
 
         try {
             List<String> errors = csvService.save(file); // Processa o arquivo CSV
             if (errors.isEmpty()) {
-                return ResponseEntity.ok("File uploaded and processed successfully.");
+                CsvResponse response = new CsvResponse("File uploaded and processed successfully.", null);
+                return ResponseEntity.ok(response);
             } else {
                 System.out.println("Data processing error:");
                 errors.forEach(System.out::println); // Imprime cada erro no console
-                return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).body(errors); // Retorna os erros
+                CsvResponse response = new CsvResponse("File processed with errors.", errors);
+                return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).body(response); // Retorna os erros no objeto
             }
         } catch (Exception e) {
-            return 
-            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing CSV file: " + e.getMessage());
+            CsvResponse response = new CsvResponse("Error processing CSV file: " + e.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 }
-
 
