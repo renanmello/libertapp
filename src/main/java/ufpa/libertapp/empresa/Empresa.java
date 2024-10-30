@@ -1,6 +1,6 @@
 package ufpa.libertapp.empresa;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ufpa.libertapp.orgao.Orgao;
 import ufpa.libertapp.user.User;
-import ufpa.libertapp.vitima.Vitima;
+
 
 @Entity
 @Table(name = "empresa")
@@ -24,7 +24,7 @@ public class Empresa {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     @JsonIgnore
     private User user;
 
@@ -36,8 +36,6 @@ public class Empresa {
     private String nome;
     private String cnpj;
     private String razao_social;
-
-
 
 
 }

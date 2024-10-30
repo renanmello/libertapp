@@ -17,7 +17,16 @@ import ufpa.libertapp.user.UserRepository;
 
 import java.io.IOException;
 
-
+/**
+ * Filtro de segurança que intercepta requisições HTTP e aplica autenticação
+ * baseada em token JWT, configurando o contexto de segurança do Spring Security.
+ * <p>
+ * Este filtro ignora endpoints de documentação Swagger para evitar autenticação nesses caminhos.
+ * </p>
+ *
+ * @version 2.0
+ * @since 2024
+ */
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
 
@@ -56,11 +65,23 @@ public class SecurityFilter extends OncePerRequestFilter {
 
      */
 
-
+    /**
+     * Intercepta cada requisição HTTP e aplica a lógica de autenticação.
+     * <p>
+     * Ignora a autenticação para URIs específicos (Swagger e favicon).
+     * Valida o token JWT, extrai o usuário associado e configura o contexto de autenticação.
+     * </p>
+     *
+     * @param request     requisição HTTP
+     * @param response    resposta HTTP
+     * @param filterChain cadeia de filtros de segurança
+     * @throws ServletException em caso de erro no processamento do filtro
+     * @throws IOException      em caso de erro de entrada/saída
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        // Ignora requisições para os endpoints do Swagger UI e documentação OpenAPI
+        // Ignora requisições para os endpoints do Swagger UI e favicon
         String requestURI = request.getRequestURI();
         logger.info("Processando requisição URI: {}", requestURI);
         if (requestURI.startsWith("/swagger-ui") || requestURI.startsWith("/v3/api-docs") || requestURI.equals("/favicon.ico")) {
@@ -81,14 +102,19 @@ public class SecurityFilter extends OncePerRequestFilter {
             var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
             logger.info("Autenticação bem-sucedida para o usuário: {}", login);
-        }else {
+        } else {
             logger.warn("Token inválido ou expirado.");
         }
         filterChain.doFilter(request, response);
     }
 
 
-    //first way to recover token
+    /**
+     * Extrai o token JWT do cabeçalho Authorization da requisição HTTP.
+     *
+     * @param request a requisição HTTP
+     * @return o token JWT, ou null se não estiver presente ou mal formatado
+     */
     private String recoverToken(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
