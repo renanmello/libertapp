@@ -27,14 +27,12 @@ public class OrgaoServiceImpl implements OrgaoService {
 
     @Override
     public Orgao create(Orgao orgao, Long userId) {
-        Optional<User> user = userRepository.findById(userId);
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        Orgao new_org = new Orgao();
+        new_org.setUser(user);
+        new_org.setNome(orgao.getNome());
 
-        if (user.isEmpty()) {
-            throw new RuntimeException("Usuário com ID " + userId + " não encontrado.");
-        }
-
-        orgao.setUser(user.get());
-        return orgaoRepository.save(orgao);
+        return orgaoRepository.save(new_org);
     }
 
     @Override
