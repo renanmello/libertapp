@@ -10,6 +10,7 @@ import lombok.Setter;
 import ufpa.libertapp.empresa.Empresa;
 import ufpa.libertapp.user.User;
 
+
 import java.util.List;
 
 @Entity
@@ -19,12 +20,13 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Orgao {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     @JsonBackReference
     private User user;
 
@@ -33,4 +35,6 @@ public class Orgao {
     @OneToMany(mappedBy = "orgao", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Empresa> empresas_cad; //lista das empresas cadastradas pelo orgao
+
+
 }

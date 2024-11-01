@@ -1,5 +1,6 @@
 package ufpa.libertapp.empresa;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.Setter;
 import ufpa.libertapp.orgao.Orgao;
 import ufpa.libertapp.user.User;
 
+
 @Entity
 @Table(name = "empresa")
 @Getter
@@ -16,6 +18,7 @@ import ufpa.libertapp.user.User;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Empresa {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,4 +36,6 @@ public class Empresa {
     private String nome;
     private String cnpj;
     private String razao_social;
+
+
 }
