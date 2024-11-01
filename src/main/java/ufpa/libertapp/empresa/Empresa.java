@@ -1,6 +1,5 @@
 package ufpa.libertapp.empresa;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ufpa.libertapp.orgao.Orgao;
 import ufpa.libertapp.user.User;
-
 
 @Entity
 @Table(name = "empresa")
@@ -36,6 +34,4 @@ public class Empresa {
     private String nome;
     private String cnpj;
     private String razao_social;
-
-
 }

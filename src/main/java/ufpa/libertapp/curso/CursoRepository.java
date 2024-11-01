@@ -22,7 +22,7 @@ public interface CursoRepository extends JpaRepository<Curso, Long> {
      * @param userId o ID do usuário cujos cursos serão recuperados
      * @return uma lista de objetos {@link Curso} associados ao usuário
      */
-    @Query(value = "SELECT c.id,vitima_cpf,c.nome,c.conteudo,c.empresa_curso,c.horas FROM curso c JOIN vitima v ON v.cpf = c.vitima_cpf WHERE v.user_id = :userId", nativeQuery = true)
+    @Query(value = "SELECT c.id,vitima_cpf,c.nome,c.conteudo,c.empresa_curso,c.horas FROM "
+        + "curso c JOIN vitima v ON v.cpf = c.vitima_cpf WHERE v.user_id = :userId", nativeQuery = true)
     List<Curso> findByUserId(@Param("userId") Long userId);
-
 }

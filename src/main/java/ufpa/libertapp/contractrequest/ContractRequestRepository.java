@@ -11,6 +11,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @version 2.0
  * @since 2024
  */
-public interface ContractRequestRepository extends JpaRepository<ContractRequest, Long> {
-
-}
+public interface ContractRequestRepository extends JpaRepository<ContractRequest, Long> {}

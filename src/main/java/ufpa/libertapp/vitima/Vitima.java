@@ -1,6 +1,5 @@
 package ufpa.libertapp.vitima;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
@@ -33,7 +32,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Vitima {
-
     /**
      * CPF da vítima, utilizado como identificador único.
      */

@@ -20,7 +20,6 @@ import java.util.List;
  */
 @Service
 public class VitimaServiceImpl implements VitimaService {
-
     private final VitimaRepository vitimaRepository;
     private final UserRepository userRepository;
 
@@ -57,7 +56,8 @@ public class VitimaServiceImpl implements VitimaService {
      */
     @Override
     public Vitima create(Vitima vitima, Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
+        User user = userRepository.findById(userId).orElseThrow(()
+            -> new RuntimeException("Usuário não encontrado."));
 
         vitima.setUser(user);
         if (vitimaRepository.existsById(vitima.getCpf())) {
@@ -79,15 +79,8 @@ public class VitimaServiceImpl implements VitimaService {
     public Vitima update(Vitima vitima, Long id) {
 
         Vitima existingVitima = vitimaRepository.findByUserId(id);
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
-
-        /*
-        Vitima = vitimaRepository.findById(cpf)
-                .orElseThrow(() -> new RuntimeException("Vítima não encontrada com o CPF: " + cpf));
-        User user = userRepository.findById(vitima.getUser().getId())
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
-        */
-
+        User user = userRepository.findById(id).orElseThrow(()
+            -> new RuntimeException("Usuário não encontrado."));
 
         // Atualiza os campos necessários
         existingVitima.setNome(vitima.getNome());
@@ -106,17 +99,6 @@ public class VitimaServiceImpl implements VitimaService {
         existingVitima.setUser(user);
         existingVitima.setContactada(true);
         existingVitima.setEscolaridade(vitima.getEscolaridade());
-        //if(vitima.getCpf() == null){
-        //    throw new RuntimeException("To update a record, you must have an CPF");
-        //}
-
-        // Atualiza o usuário, se necessário
-        //if (vitima.getUser() != null) {
-        //    User user = userRepository.findById(vitima.getUser().getId())
-        //            .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
-        //    existingVitima.setUser(user);
-        //}
-
 
         return vitimaRepository.save(existingVitima);
     }
@@ -172,6 +154,4 @@ public class VitimaServiceImpl implements VitimaService {
     public List<ExperienciaDTO> findExperienciasByUserId(Long userId) {
         return vitimaRepository.findExperienciasByUserId(userId);
     }
-
-
 }

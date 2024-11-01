@@ -1,6 +1,5 @@
 package ufpa.libertapp.security;
 
-
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -70,5 +69,3 @@ public class AuthenticationController {
         return ResponseEntity.ok(new RegisterResponseDTO(newUser.getId(), newUser.getLogin()));
     }
 }
-
-

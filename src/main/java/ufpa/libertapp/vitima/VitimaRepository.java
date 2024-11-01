@@ -91,8 +91,4 @@ public interface VitimaRepository extends JpaRepository<Vitima, String> {
             "JOIN v.experiencias e " +
             "WHERE v.user.id = :userId")
     List<ExperienciaDTO> findExperienciasByUserId(@Param("userId") Long userId);
-
-
-    //nome - telefone - email - senha
-
 }

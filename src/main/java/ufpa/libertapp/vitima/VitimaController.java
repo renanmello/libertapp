@@ -22,7 +22,6 @@ import java.util.List;
 @RequestMapping("/vitima")
 @RequiredArgsConstructor
 public class VitimaController {
-
     private final VitimaService vitimaService;
 
     /**

@@ -23,8 +23,7 @@ public interface ExperienciaTrabalhoRepository extends JpaRepository<Experiencia
      * @param userId o ID do usuário cujas experiências de trabalho serão recuperadas
      * @return uma lista de objetos {@link ExperienciaTrabalho} associados ao usuário
      */
-    //@Query(value = "select * from experiencia_trabalho e join vitima v on v.cpf = e.vitima_cpf  where v.user_id = :userId", nativeQuery = true)
-    //List<ExperienciaTrabalho> findByUserId(@Param("userId") Long id);
-    @Query(value = "SELECT * FROM experiencia_trabalho e JOIN vitima v ON v.cpf = e.vitima_cpf WHERE v.user_id = :userId", nativeQuery = true)
+    @Query(value = "SELECT * FROM experiencia_trabalho e JOIN vitima v ON v.cpf = e.vitima_cpf "
+        + "WHERE v.user_id = :userId", nativeQuery = true)
     List<ExperienciaTrabalho> findByUserId(@Param("userId") Long userId);
 }

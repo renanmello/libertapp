@@ -9,7 +9,6 @@ import java.util.Optional;
 
 @Service
 public class OrgaoServiceImpl implements OrgaoService {
-
     private final OrgaoRepository orgaoRepository;
     private final UserRepository userRepository;
 

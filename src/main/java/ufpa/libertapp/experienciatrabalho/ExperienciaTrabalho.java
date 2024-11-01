@@ -1,6 +1,5 @@
 package ufpa.libertapp.experienciatrabalho;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -61,5 +60,4 @@ public class ExperienciaTrabalho {
     // Relacionamento com Vitima, FK para a tabela Vitima
     @JsonIgnore
     private Vitima vitima;
-
 }

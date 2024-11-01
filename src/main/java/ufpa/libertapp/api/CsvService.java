@@ -36,7 +36,6 @@ import java.util.List;
  */
 @Service
 public class CsvService {
-
     private final VitimaRepository vitimaRepository;
     private final UserRepository userRepository;
     private final TokenService tokenService;

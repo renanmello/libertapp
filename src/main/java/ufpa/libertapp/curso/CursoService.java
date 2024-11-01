@@ -38,5 +38,4 @@ public interface CursoService {
      * @return o objeto {@link Curso} atualizado
      */
     Curso update(Curso curso, Long userId, Long cursoId);
-
 }

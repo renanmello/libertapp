@@ -1,6 +1,5 @@
 package ufpa.libertapp.user;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -151,5 +150,4 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
     }
-
 }
